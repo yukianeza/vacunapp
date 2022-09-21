@@ -57,6 +57,34 @@ class pabellon {
         return array_reverse($data);
     }
 
+    public function getFilterPabellon($data){
+        $this->sql = "SELECT id, nombre, capacidad, detalle, estado 
+                        FROM pabellon 
+                        WHERE nombre LIKE '%" . $data["nombre"] . "%' 
+                        AND capacidad >= " . $data["cantidadi"] . " 
+                        AND capacidad <= " . $data["cantidade"] . " 
+                        AND detalle LIKE '%" . $data["detalle"] . "%'
+                        AND estado LIKE '" . $data["estado"] . "' 
+                        ORDER BY id DESC
+                        ";
+        $this->queryBD();
+        $data = array();
+        $temp = array();
+        if ($this->result->num_rows > 0) {
+            
+            while($row = $this->result->fetch_assoc()) {
+                $temp["id"] =  $row["id"];
+                $temp["nombre"] =  $row["nombre"];
+                $temp["capacidad"] =  $row["capacidad"];
+                $temp["detalle"] =  $row["detalle"];  
+                $temp["estado"] =  $row["estado"];     
+                array_push($data, $temp);   
+            }
+        }
+        
+        return array_reverse($data);
+    }
+
     public function updatePabellon($data){
         $this->sql = "UPDATE pabellon 
                         SET nombre = '" . $data["nombre"] ."',

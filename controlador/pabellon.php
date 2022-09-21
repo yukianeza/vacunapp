@@ -65,6 +65,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     }
 
+    if($_GET["accion"] === "filter"){
+
+        $data['nombre'] = test_input($_GET["nombre"]);
+        $data['detalle'] = test_input($_GET["detalle"]);
+        $data['estado'] = intval(test_input($_GET["estado"]));
+        $data['cantidadi'] = test_input($_GET["cantidadi"]);
+        $data['cantidade'] = test_input($_GET["cantidade"]);
+        $result['pabellonf'] = $pabellon->getFilterPabellon($data);
+        $pabellon->disconnectBD();   
+        header('Content-type: application/json; charset=utf-8');       
+        echo json_encode($result);  
+        exit();
+    }
+
 }
 
 ?>
