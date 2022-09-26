@@ -65,8 +65,7 @@ class pabellon {
                         AND capacidad <= " . $data["cantidade"] . " 
                         AND detalle LIKE '%" . $data["detalle"] . "%'
                         AND estado LIKE '" . $data["estado"] . "' 
-                        ORDER BY id DESC
-                        ";
+                        ORDER BY id DESC";
         $this->queryBD();
         $data = array();
         $temp = array();

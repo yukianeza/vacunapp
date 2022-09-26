@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         $data['nombre'] = test_input($_GET["nombre"]);
         $data['detalle'] = test_input($_GET["detalle"]);
-        $data['estado'] = intval(test_input($_GET["estado"]));
+        $data['estado'] = test_input($_GET["estado"]);
         $data['cantidadi'] = test_input($_GET["cantidadi"]);
         $data['cantidade'] = test_input($_GET["cantidade"]);
         $result['pabellonf'] = $pabellon->getFilterPabellon($data);

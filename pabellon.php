@@ -279,46 +279,45 @@ include_once 'templates/header.php';
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 
-var $timer;
+    var $timer;
 
-  $(function () {
+    //Funciones de consulta al controlador
+    var datatable = $('#tablepabellones').DataTable({"deferRender": true,
+                                            "language": {
+                                                "sProcessing":     "",
+                                                "sLengthMenu":     "Mostrar _MENU_ registros",
+                                                "sZeroRecords":    "No se encontraron resultados",
+                                                "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                                                "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                                                "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                                "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                                                "sInfoPostFix":    "",
+                                                "sSearch":         "Buscar:",
+                                                "searchPlaceholder": "Escriba aquí..",
+                                                "sUrl":            "",
+                                                "sInfoThousands":  ",",
+                                                "oPaginate": {
+                                                    "sFirst":    "Primero",
+                                                    "sLast":     "Último",
+                                                    "sNext":     "Siguiente",
+                                                    "sPrevious": "Anterior"
+                                                },
+                                                "oAria": {
+                                                    "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                                                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                                                },
+                                            },
+                                            "responsive": true,
+                                            "autoWidth": true,
+                                        });
+
+
+  
 
     //Cuando incia la pagina
     window.onload = function(){
         getData();
     }
-
-    //Funciones de consulta al controlador
-    var datatable = $('#tablepabellones').DataTable({"deferRender": true,
-                                                "language": {
-                                                    "sProcessing":     "",
-                                                    "sLengthMenu":     "Mostrar _MENU_ registros",
-                                                    "sZeroRecords":    "No se encontraron resultados",
-                                                    "sEmptyTable":     "Ningún dato disponible en esta tabla",
-                                                    "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                                                    "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-                                                    "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-                                                    "sInfoPostFix":    "",
-                                                    "sSearch":         "Buscar:",
-                                                    "searchPlaceholder": "Escriba aquí..",
-                                                    "sUrl":            "",
-                                                    "sInfoThousands":  ",",
-                                                    "oPaginate": {
-                                                        "sFirst":    "Primero",
-                                                        "sLast":     "Último",
-                                                        "sNext":     "Siguiente",
-                                                        "sPrevious": "Anterior"
-                                                    },
-                                                    "oAria": {
-                                                        "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                                                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                                                    },
-                                                },
-                                                "responsive": true,
-                                                "autoWidth": true,
-                                            });
-
-
 
     function getData() {
         getPabellon();
@@ -410,7 +409,7 @@ var $timer;
     }
 
     $('#reservation').daterangepicker()
-  });
+  
 
     //seteo de modales
     function cargarPabellon(id, nombre, capacidad, detalle, estado) {
@@ -624,7 +623,7 @@ var $timer;
             type:"GET",
             success: function(val){
                 console.log(val);
-                //datatable.destroy();
+                datatable.destroy();
                 var cad = "";
                 console.log("Entro en el ajax 1" + Object.values(val['pabellonf']));
                 
