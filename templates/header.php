@@ -163,7 +163,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="mesa.php" class="nav-link">
               <i class="fas fa-circle nav-icon"></i>
               <p>Mesa</p>
             </a>

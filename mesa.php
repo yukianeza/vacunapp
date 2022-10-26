@@ -8,12 +8,12 @@ include_once 'templates/header.php';
       <div class="container-fluid">
         <div class="row mb-2 mr-2">
           <div class="col-sm-6">
-            <h1>Pabellones</h1>
+            <h1>Mesas</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="index.php">Inicio</a></li>
-              <li class="breadcrumb-item active">Pabellon</li>
+              <li class="breadcrumb-item active">Mesas</li>
             </ol>
           </div>
         </div>
@@ -43,23 +43,6 @@ include_once 'templates/header.php';
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="form-group">
-                        <label>Detalle</label>
-                        <input type="text" class="form-control" id="txt_filter_detalle"/>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label>Estado</label>
-                        <select class="form-control" id="txt_filter_estado">
-                            <option value="0">Inactivo</option>
-                            <option value="1">Activo</option>
-                            <option value="3" selected>Ambos</option>
-                        </select>
-                    </div>
-                </div>
-                <!-- /.col -->
-                <div class="col-md-3">
                     <div class="row">
                         <div class="col-md-6">
                             <label>Cap. mayor igual que</label>
@@ -71,13 +54,38 @@ include_once 'templates/header.php';
                         </div>
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select class="custom-select" id="spn_filter_estado">
+                            <option value="%" selected>Elegir...</option>
+                            <option value="0">Inactivo</option>
+                            <option value="1">Activo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Pabellon</label>
+                        <select class="custom-select" id="spn_filter_pabellon">
+                        </select>
+                    </div>
+                </div>
               <!-- /.col -->
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Detalle</label>
+                        <input type="text" class="form-control" id="txt_filter_detalle"/>
+                    </div>
+                </div>
             </div>
             <!-- /.row -->
           </div>
           <!-- /.card-body -->
           <div class="card-footer text-center">
-            <button type="button" class="btn btn-success" onclick="cargarFiltroPabellon()">Filtrar</button>
+            <button type="button" class="btn btn-success" onclick="cargarFiltroMesa()">Filtrar</button>
           </div>
         </div>
         <!-- /.card -->
@@ -86,17 +94,18 @@ include_once 'templates/header.php';
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#agregarModal"  onclick="cargarAgregarPabellon()">Registrar nueva pabellón</button>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#agregarModal"  onclick="cargarAgregarMesa()">Registrar nueva Mesa</button>
               </div>
               <div class="card-body">
-                <table id="tablepabellones" class="table table-bordered">
+                <table id="tablemesas" class="table table-bordered">
                   <thead>
                   <tr>
                     <th>Codigo</th>
                     <th>Nombre</th>
-                    <th>Capacidad </th>
+                    <th>Capacidad</th>
                     <th>Detalle </th>
                     <th>Estado</th>
+                    <th>Pabellon</th>
                     <th>Acciones</th>
                   </tr>
                   </thead>
@@ -139,7 +148,7 @@ include_once 'templates/header.php';
     <div class="modal-dialog modal-m" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="itemModalLabel">Agregar Pabellon</h5>
+                <h5 class="modal-title" id="itemModalLabel">Agregar Mesa</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -166,12 +175,17 @@ include_once 'templates/header.php';
                     </select>
                     <br>
 
+                    <label>Pabellon:</label>
+                    <select class="form-control" id="spn_add_pabellon">
+                    </select>
+                    <br>
+
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <button type="button" class="btn btn-primary"
-                    onclick="agregarPabellon();"
+                    onclick="agregarMesa();"
                     data-dismiss="modal">Agregar</button>
             </div>
         </div>
@@ -182,7 +196,7 @@ include_once 'templates/header.php';
     <div class="modal-dialog modal-m" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="itemModalLabel">Modificar Pabellon</h5>
+                <h5 class="modal-title" id="itemModalLabel">Modificar Mesa</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -212,12 +226,17 @@ include_once 'templates/header.php';
                     </select>
                     <br>
 
+                    <label>Pabellon:</label>
+                    <select class="form-control" id="spn_mod_pabellon">
+                    </select>
+                    <br>
+
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <button type="button" class="btn btn-primary"
-                    onclick="modificarPabellon();"
+                    onclick="modificarMesa();"
                     data-dismiss="modal">Guardar</button>
             </div>
         </div>
@@ -229,7 +248,7 @@ include_once 'templates/header.php';
     <div class="modal-dialog modal-m" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="itemModalLabel">Eliminar Pabellon</h5>
+                <h5 class="modal-title" id="itemModalLabel">Eliminar Mesa</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -244,7 +263,7 @@ include_once 'templates/header.php';
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary"
-                    onclick="eliminarPabellon()"
+                    onclick="eliminarMesa()"
                     data-dismiss="modal">Eliminar</button>
             </div>
         </div>
@@ -273,8 +292,6 @@ include_once 'templates/header.php';
 <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-<!-- Select2 -->
-<script src="plugins/select2/js/select2.full.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
 <!-- Page specific script -->
@@ -284,7 +301,7 @@ include_once 'templates/header.php';
     var $timer;
 
     //Funciones de consulta al controlador
-    var datatable = $('#tablepabellones').DataTable({"deferRender": true,
+    var datatable = $('#tablemesas').DataTable({"deferRender": true,
                                             "language": {
                                                 "sProcessing":     "",
                                                 "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -322,7 +339,7 @@ include_once 'templates/header.php';
     }
 
     function getData() {
-        getPabellon();
+        getMesas();
     }
 
     // Funcion para testear respuesta del JSON 
@@ -339,33 +356,35 @@ include_once 'templates/header.php';
                 }
     }
 
-    function getPabellon(){
+    function getMesas(){
         $.ajax({
-            url: "controlador/pabellon.php?accion=lectura",
+            url: "controlador/mesa.php?accion=lectura",
             type: "GET",
             success: function(val){
                 datatable.destroy();
                 var cad = "";
-                console.log("Entro en el ajax 1" + Object.values(val['pabellon']));
+                console.log("Entro en el ajax 1" + Object.values(val['mesa']));
                 
-                for (i in val['pabellon']) {
-                    aux = '<td align="center">' + val['pabellon'][i].id + '</td>';
-                    aux = aux + '<td align="center">' + val['pabellon'][i].nombre + '</td>';
-                    aux = aux + '<td align="center">' + val['pabellon'][i].capacidad + '</td>';
-                    aux = aux + '<td align="center">' + val['pabellon'][i].detalle + '</td>';
-                    aux = aux + '<td align="center">' + val['pabellon'][i].estado + '</td>';
+                for (i in val['mesa']) {
+                    aux = '<td align="center">' + val['mesa'][i].id + '</td>';
+                    aux = aux + '<td align="center">' + val['mesa'][i].nombre + '</td>';
+                    aux = aux + '<td align="center">' + val['mesa'][i].capacidad + '</td>';
+                    aux = aux + '<td align="center">' + val['mesa'][i].detalle + '</td>';
+                    aux = aux + '<td align="center">' + val['mesa'][i].estado + '</td>';
+                    aux = aux + '<td align="center">' + val['mesa'][i].pabellon + '</td>';
                     aux = aux + '<td class="text-center" >';
-                    aux = aux + '<button class="btn btn-info" type="button" onclick="cargarPabellon(\'' 
-                    + val['pabellon'][i].id + '\',\'' 
-                    + val['pabellon'][i].nombre + '\',\'' 
-                    + val['pabellon'][i].capacidad + '\',\'' 
-                    + val['pabellon'][i].detalle + '\','  
-                    + val['pabellon'][i].estado  
+                    aux = aux + '<button class="btn btn-info" type="button" onclick="cargarMesa(\'' 
+                    + val['mesa'][i].id + '\',\'' 
+                    + val['mesa'][i].nombre + '\',\'' 
+                    + val['mesa'][i].capacidad + '\',\'' 
+                    + val['mesa'][i].detalle + '\','  
+                    + val['mesa'][i].estado  + ',\'' 
+                    + val['mesa'][i].pabellon + '\''
                     + ')" data-toggle="modal" data-target="#itemModal1" title="modificar"><i class="fa fa-edit"></i></button>';
                     aux = aux + ' ';
-                    aux = aux + '<button class="btn btn-danger" type="button" onclick="cargarEliminarPabellon(\''
-                    + val['pabellon'][i].id + '\',\''
-                    + val['pabellon'][i].nombre +
+                    aux = aux + '<button class="btn btn-danger" type="button" onclick="cargarEliminarMesa(\''
+                    + val['mesa'][i].id + '\',\''
+                    + val['mesa'][i].nombre +
                     '\')" title="eliminar" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash"></i></button>';
                     aux = aux + '</td>';
 
@@ -375,7 +394,7 @@ include_once 'templates/header.php';
 
                 document.getElementById("gridbody").innerHTML = cad;
 
-                datatable = $('#tablepabellones').DataTable({"deferRender": true,
+                datatable = $('#tablemesas').DataTable({"deferRender": true,
                                                 "language": {
                                                     "sProcessing":     "",
                                                     "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -408,26 +427,46 @@ include_once 'templates/header.php';
                 console.log("Entro en el ajax");
             }
         });
+
+        $.ajax({
+                url: "controlador/pabellon.php?accion=lectura",
+                type: "GET",
+                success: function(val){
+                    var cad = "";
+                    console.log("Entro en el ajax 1" + Object.values(val['pabellon']));
+                    for (i in val['pabellon']) {
+
+                        aux = "<option value='" + val['pabellon'][i].id + "'>" + val['pabellon'][i].nombre +"</option>";
+                        cad = cad + aux;
+                    }
+                    console.log(cad);
+                    document.getElementById("spn_filter_pabellon").innerHTML = "<option value='%' selected>Elegir...</option>" + cad;
+                    document.getElementById("spn_mod_pabellon").innerHTML = cad;
+                    document.getElementById("spn_add_pabellon").innerHTML = cad;
+            }
+        });
+
     }
 
     $('#reservation').daterangepicker()
   
 
     //seteo de modales
-    function cargarPabellon(id, nombre, capacidad, detalle, estado) {
+    function cargarMesa(id, nombre, capacidad, detalle, estado, pabellon) {
         document.getElementById("txt_mod_codigo").value = id;
         document.getElementById("txt_mod_nombre").value = nombre;
         document.getElementById("txt_mod_capacidad").value = capacidad;
         document.getElementById("txt_mod_detalle").value = detalle;
         document.getElementById("spn_mod_estado").value = estado;
+        document.getElementById("spn_mod_pabellon").value = pabellon;
     }
 
-    function cargarEliminarPabellon(id, nombre) {
+    function cargarEliminarMesa(id, nombre) {
         document.getElementById("txt_del_codigo").value = id;
         document.getElementById("txt_del_nombre").value = nombre;
     }
 
-    function cargarAgregarPabellon() {
+    function cargarAgregarMesa() {
         document.getElementById("txt_add_nombre").value = "";
         document.getElementById("txt_add_capacidad").value = 20;
         document.getElementById("txt_add_detalle").value = "";
@@ -436,7 +475,7 @@ include_once 'templates/header.php';
 
     //Opciones Insertar, Eliminar, Modificar
 
-    function modificarPabellon(){
+    function modificarMesa(){
 
         //codigo
         var codigo = document.getElementById("txt_mod_codigo").value;
@@ -451,21 +490,26 @@ include_once 'templates/header.php';
         var detalle = document.getElementById("txt_mod_detalle").value;
 
         //estado
-        var estado = document.getElementById("spn_mod_estado").value;      
+        var estado = document.getElementById("spn_mod_estado").value;
+        
+        //pabellon
+        var estado = document.getElementById("spn_mod_pabellon").value;
 
         console.log("entro en el codigo" + codigo);
         console.log("entro en el nombre" + nombre);
         console.log("entro en el capacidad" + capacidad);
         console.log("entro en el detalle" + detalle);
         console.log("entro en el estado" + estado);
+        console.log("entro en el pabellon" + pabellon);
 
         $.ajax({
             
-            url: "controlador/pabellon.php?codigo=" + codigo + 
+            url: "controlador/mesa.php?codigo=" + codigo + 
                                             '&nombre=' + nombre + 
                                             '&capacidad=' + capacidad + 
                                             '&detalle=' + detalle +              	                                
                                             '&estado=' + estado +
+                                            '&pabellon=' + pabellon +
                                             '&accion=modificar',
             type:"GET",
             success: function(val){
@@ -489,12 +533,12 @@ include_once 'templates/header.php';
         });        
     }
 
-    function eliminarPabellon(){
+    function eliminarMesa(){
         var codigo = document.getElementById("txt_del_codigo").value;
         var nombre = document.getElementById("txt_del_nombre").value;
 
         $.ajax({
-            url: "controlador/pabellon.php?codigo=" + codigo + "&nombre=" + nombre + '&accion=eliminar',
+            url: "controlador/mesa.php?codigo=" + codigo + "&nombre=" + nombre + '&accion=eliminar',
             type: "GET",
             success: function(val){
                 var message;
@@ -514,7 +558,7 @@ include_once 'templates/header.php';
         });
     }
 
-    function agregarPabellon(){
+    function agregarMesa(){
 
         //nombre
         var nombre = document.getElementById("txt_add_nombre").value;
@@ -528,18 +572,23 @@ include_once 'templates/header.php';
         //estado
         var estado = document.getElementById("spn_add_estado").value;   
 
+        //pabellon
+        var pabellon = document.getElementById("spn_add_pabellon").value;   
+
         console.log("entro en el nombre" + nombre);
         console.log("entro en el capacidad" + capacidad);
         console.log("entro en el detalle" + detalle);
         console.log("entro en el estado" + estado);
+        console.log("entro en el estado" + pabellon);
 
         $.ajax({
             
-            url: "controlador/pabellon.php?" +
+            url: "controlador/mesa.php?" +
                                             'nombre=' + nombre + 
                                             '&capacidad=' + capacidad + 
                                             '&detalle=' + detalle +              	                                
                                             '&estado=' + estado +
+                                            '&pabellon=' + pabellon +
                                             '&accion=agregar',
             type:"GET",
             success: function(val){
@@ -563,13 +612,14 @@ include_once 'templates/header.php';
         });
     }
 
-    function cargarFiltroPabellon(){
+    function cargarFiltroMesa(){
 
         var nombre = document.getElementById("txt_filter_nombre").value.length;
         var detalle = document.getElementById("txt_filter_detalle").value.length;
         var estado = document.getElementById("txt_filter_estado").value;
         var cantidadi = document.getElementById("txt_filter_capacidadi").value.length;
         var cantidade = document.getElementById("txt_filter_capacidade").value.length;
+        var pabellon = document.getElementById("spn_filter_pabellon").value;
         
 
         if(nombre == 0){
@@ -611,42 +661,45 @@ include_once 'templates/header.php';
 
         console.log("Filter entro en el cantidadi" + cantidadi);
         console.log("Filter entro en el cantidade" + cantidade);
+        console.log("Filter entro en el pabellon" + pabellon);
 
         
         $.ajax({
 
-            url: "controlador/pabellon.php?" + 
+            url: "controlador/mesa.php?" + 
                                             'nombre=' + nombre +
                                             '&detalle=' + detalle +
                                             '&estado=' + estado +
                                             '&cantidadi=' + cantidadi +
                                             '&cantidade=' + cantidade +
+                                            '&pabellon=' + pabellon +
                                             '&accion=filter',
             type:"GET",
             success: function(val){
                 console.log(val);
                 datatable.destroy();
                 var cad = "";
-                console.log("Entro en el ajax 1" + Object.values(val['pabellonf']));
+                console.log("Entro en el ajax 1" + Object.values(val['mesaf']));
                 
-                for (i in val['pabellonf']) {
-                    aux = '<td align="center">' + val['pabellonf'][i].id + '</td>';
-                    aux = aux + '<td align="center">' + val['pabellonf'][i].nombre + '</td>';
-                    aux = aux + '<td align="center">' + val['pabellonf'][i].capacidad + '</td>';
-                    aux = aux + '<td align="center">' + val['pabellonf'][i].detalle + '</td>';
-                    aux = aux + '<td align="center">' + val['pabellonf'][i].estado + '</td>';
+                for (i in val['mesaf']) {
+                    aux = '<td align="center">' + val['mesaf'][i].id + '</td>';
+                    aux = aux + '<td align="center">' + val['mesaf'][i].nombre + '</td>';
+                    aux = aux + '<td align="center">' + val['mesaf'][i].capacidad + '</td>';
+                    aux = aux + '<td align="center">' + val['mesaf'][i].detalle + '</td>';
+                    aux = aux + '<td align="center">' + val['mesaf'][i].estado + '</td>';
                     aux = aux + '<td class="text-center" >';
-                    aux = aux + '<button class="btn btn-info" type="button" onclick="cargarPabellon(\'' 
-                    + val['pabellonf'][i].id + '\',\'' 
-                    + val['pabellonf'][i].nombre + '\',\'' 
-                    + val['pabellonf'][i].capacidad + '\',\'' 
-                    + val['pabellonf'][i].detalle + '\','  
-                    + val['pabellonf'][i].estado  
+                    aux = aux + '<button class="btn btn-info" type="button" onclick="cargarMesa(\'' 
+                    + val['mesaf'][i].id + '\',\'' 
+                    + val['mesaf'][i].nombre + '\',\'' 
+                    + val['mesaf'][i].capacidad + '\',\'' 
+                    + val['mesaf'][i].detalle + '\','  
+                    + val['mesaf'][i].estado + ','
+                    + val['mesaf'][i].pabellon +   
                     + ')" data-toggle="modal" data-target="#itemModal1" title="modificar"><i class="fa fa-edit"></i></button>';
                     aux = aux + ' ';
-                    aux = aux + '<button class="btn btn-danger" type="button" onclick="cargarEliminarPabellon(\''
-                    + val['pabellonf'][i].id + '\',\''
-                    + val['pabellonf'][i].nombre +
+                    aux = aux + '<button class="btn btn-danger" type="button" onclick="cargarEliminarMesa(\''
+                    + val['mesaf'][i].id + '\',\''
+                    + val['mesaf'][i].nombre +
                     '\')" title="eliminar" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash"></i></button>';
                     aux = aux + '</td>';
 
@@ -656,7 +709,7 @@ include_once 'templates/header.php';
 
                 document.getElementById("gridbody").innerHTML = cad;
 
-                datatable = $('#tablepabellones').DataTable({"deferRender": true,
+                datatable = $('#tablemesas').DataTable({"deferRender": true,
                                                 "language": {
                                                     "sProcessing":     "",
                                                     "sLengthMenu":     "Mostrar _MENU_ registros",
