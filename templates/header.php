@@ -11,6 +11,10 @@
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- IonIcons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="./plugins/fontawesome-free/css/all.min.css">
+  <!-- fullCalendar -->
+  <link rel="stylesheet" href="./plugins/fullcalendar/main.css">
   <!-- Select2 -->
   <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
   <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
@@ -132,6 +136,12 @@
             </ul>
           </li>
           <li class="nav-header">Base de datos</li>
+          <li class="nav-item">
+            <a href="calendario.php" class="nav-link">
+              <i class="fas fa-circle nav-icon"></i>
+              <p>Calendario</p>
+            </a>
+          </li>
           <li class="nav-item">
             <a href="citas.php" class="nav-link">
               <i class="fas fa-circle nav-icon"></i>

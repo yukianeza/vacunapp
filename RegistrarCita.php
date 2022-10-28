@@ -1,6 +1,18 @@
 <?php 
-
+require __DIR__ . '/twilio-php-main/src/Twilio/autoload.php';
 include_once 'templates/header.php';
+
+use Twilio\Rest\Client;
+// Your Account SID and Auth Token from twilio.com/console
+$account_sid = 'ACXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
+$auth_token = 'your_auth_token';
+// In production, these should be environment variables. E.g.:
+// $auth_token = $_ENV["TWILIO_ACCOUNT_SID"]
+// A Twilio number you own with SMS capabilities
+$twilio_number = "+15017122661";
+$client = new Client($account_sid, $auth_token);
+
+
 ?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -571,6 +583,7 @@ include_once 'templates/header.php';
                             }).then((result) => {
                                 if(result){
                                     // Do Stuff here for success
+                                    //aqui poner la logica del mandar mensaje
                                     location.reload();
                                 }else{
                                     // something other stuff

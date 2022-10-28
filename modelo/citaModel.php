@@ -447,7 +447,28 @@ class cita {
         return $result;
     }
 
+    function getCita(){
+        $this->sql = 'select cita.fecha_programada as fecha, IF(cita.estado = 1, "Creado", IF(cita.estado = 2,"Realizado", "Reprogramado")) as estado, CONCAT(persona.nombre1, " ", persona.apellido_paterno) as persona, persona.dni as dni
+        FROM cita
+        INNER JOIN paciente ON  paciente.id = cita.idpaciente
+        INNER JOIN persona ON persona.id = paciente.idpersona;';
+        $this->queryBD();
+        $data = array();
+        $temp = array();
+        if ($this->result->num_rows > 0){
 
+            while($row = $this->result->fetch_assoc()) {
+                $temp["fecha"] =  $row["fecha"]; 
+                $temp["estado"] =  $row["estado"]; 
+                $temp["persona"] =  $row["persona"]; 
+                $temp["dni"] =  $row["dni"]; 
+                array_push($data, $temp); 
+            }
+
+            return array_reverse($data);
+
+        }
+    }
 
 }
 
