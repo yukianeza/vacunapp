@@ -4,6 +4,9 @@ include '../modelo/tools.php';
 include '../modelo/cnnt.php';
 include '../modelo/vacuna_aplicacionModel.php';
 
+header('Access-Control-Allow-Origin: *');
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 
@@ -64,6 +67,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $data['Turno'] = test_input($_GET["descripcion"]);
         $result['turnof'] = $pabellon->getFilterTurno($data);
         $pabellon->disconnectBD();   
+        header('Content-type: application/json; charset=utf-8');       
+        echo json_encode($result);  
+        exit();
+    }
+	
+	if($_GET["accion"] === "prueba"){
+
+        $result['response'] = "ok";
+        $VacunaAplicacion->disconnectBD();   
         header('Content-type: application/json; charset=utf-8');       
         echo json_encode($result);  
         exit();
