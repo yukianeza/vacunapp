@@ -36,9 +36,11 @@ class paciente {
         echo '</script>';
     }
 
-    public function getPabellon() {
-        $this->sql = "SELECT id, nombre, capacidad, detalle, estado 
-                        FROM pabellon ORDER BY id DESC";
+    public function getPaciente() {
+        $this->sql = "SELECT persona.* 
+                        FROM persona 
+                        INNER JOIN paciente ON paciente.idpersona = persona.id
+                        ORDER BY id DESC";
         $this->queryBD();
         $data = array();
         $temp = array();
@@ -46,10 +48,12 @@ class paciente {
             
             while($row = $this->result->fetch_assoc()) {
                 $temp["id"] =  $row["id"];
-                $temp["nombre"] =  $row["nombre"];
-                $temp["capacidad"] =  $row["capacidad"];
-                $temp["detalle"] =  $row["detalle"];  
-                $temp["estado"] =  $row["estado"];     
+                $temp["nombre1"] =  $row["nombre1"];
+                $temp["nombre2"] =  $row["nombre2"];
+                $temp["dni"] =  $row["dni"];
+                $temp["apellido_paterno"] =  $row["apellido_paterno"];  
+                $temp["apellido_materno"] =  $row["apellido_materno"]; 
+                $temp["fecha_nacimiento"] =  $row["fecha_nacimiento"];     
                 array_push($data, $temp);   
             }
         }
@@ -79,33 +83,55 @@ class paciente {
         return array_reverse($data);
     }
 
-    public function updatePabellon($data){
-        $this->sql = "UPDATE pabellon 
-                        SET nombre = '" . $data["nombre"] ."',
-                            capacidad = " . $data["capacidad"] . ",
-                            detalle = '" . $data["detalle"] . "',
-                            estado = " . $data["estado"] . " 
+    public function updatePaciente($data){
+        $this->sql = "UPDATE persona 
+                        SET nombre1 = '" . $data["nombre1"] ."', 
+                            nombre2 = '" . $data["nombre2"] . "', 
+                            apellido_paterno = '" . $data["apellido_paterno"] . "', 
+                            apellido_materno = '" . $data["apellido_materno"] . "', 
+                            dni = '" . $data["dni"] . "', 
+                            fecha_nacimiento = '" . $data["fecha_nacimiento"] . "' 
                         WHERE id = " . $data["codigo"];
         if ($this->queryBD()){
-            $result["mensaje"] = "El " . $data["nombre"] . " se actualizo exitosamente !";
+            $result["mensaje"] = "El " . $data["nombre1"] . " se actualizo exitosamente !";
         } else {
             $result["mensaje"] = "Hubo un error al modificar";
         }
         return $result;
     }
 
-    public function deletePabellon($data){
-        $this->sql = "DELETE FROM pabellon WHERE id = " . $data["codigo"];
+    public function deletePaciente($data){
+        $this->sql = "DELETE FROM paciente WHERE idpersona = " . $data["codigo"];
+        $this->queryBD();
+        $this->sql = "DELETE FROM persona WHERE id = " . $data["codigo"];
         if ($this->queryBD()){
-            $result["mensaje"] = "El " . $data["nombre"] . " se elmino correctamente !";
+            $result["mensaje"] = "El registro se elmino correctamente !";
         } else {
-            $result["mensaje"] = "Hubo un error al modificar";
+            $result["mensaje"] = "Hubo un error al eliminar";
         }
         return $result;
     }
 
-    public function insertResponsable($data){
-        $this->sql = "INSERT INTO pabellon (nombre,capacidad,detalle,estado) VALUES('" . $data["nombre"] . "'," . $data["capacidad"] . ",'" . $data["detalle"] . "'," . $data["estado"] . ")";
+    public function insertPaciente($data){
+        $this->sql = "INSERT INTO persona (nombre1,nombre2,apellido_paterno,apellido_materno,dni,fecha_nacimiento) 
+            VALUES('" . $data["nombre1"] . 
+                 "','" . $data["nombre2"] . 
+                 "','" . $data["apellido_paterno"] . 
+                 "','" . $data["apellido_materno"] .
+                 "','" . $data["dni"] . 
+                 "','" . $data["fecha_nacimiento"] . "')";
+        $this->queryBD();
+        $this->sql = "select persona.id from persona
+                       where dni = '" . $data["dni"] . "'";
+        $this->queryBD();
+        if ($this->result->num_rows > 0) {
+            
+            while($row = $this->result->fetch_assoc()) {
+                $idpersona =  $row["id"];
+            }
+        }
+
+        $this->sql = "INSERT INTO paciente (idpersona) VALUES('" . $idpersona . "')";
         if ($this->queryBD()){
             $result["mensaje"] = "Se registro exitosamente !";
         } else {

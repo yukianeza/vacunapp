@@ -32,146 +32,24 @@ include_once 'templates/header.php';
             <div class="card">
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Online Store Visitors</h3>
-                  <a href="javascript:void(0);">View Report</a>
+                  <h3 class="card-title">Porcentaje de cumplimiento de citas de vacunación</h3>
                 </div>
               </div>
               <div class="card-body">
                 <div class="d-flex">
                   <p class="d-flex flex-column">
-                    <span class="text-bold text-lg">820</span>
-                    <span>Visitors Over Time</span>
-                  </p>
-                  <p class="ml-auto d-flex flex-column text-right">
-                    <span class="text-success">
-                      <i class="fas fa-arrow-up"></i> 12.5%
-                    </span>
-                    <span class="text-muted">Since last week</span>
+                    <span class="text-bold text-lg" id='label_citas_incumplidas'>0</span>
+                    <span>Citas incumplidas</span>
                   </p>
                 </div>
                 <!-- /.d-flex -->
 
                 <div class="position-relative mb-4">
-                  <canvas id="visitors-chart" height="200"></canvas>
-                </div>
-
-                <div class="d-flex flex-row justify-content-end">
-                  <span class="mr-2">
-                    <i class="fas fa-square text-primary"></i> This Week
-                  </span>
-
-                  <span>
-                    <i class="fas fa-square text-gray"></i> Last Week
-                  </span>
+                  <canvas id="bar-chart" height="200"></canvas>
                 </div>
               </div>
             </div>
             <!-- /.card -->
-
-            <div class="card">
-              <div class="card-header border-0">
-                <h3 class="card-title">Products</h3>
-                <div class="card-tools">
-                  <a href="#" class="btn btn-tool btn-sm">
-                    <i class="fas fa-download"></i>
-                  </a>
-                  <a href="#" class="btn btn-tool btn-sm">
-                    <i class="fas fa-bars"></i>
-                  </a>
-                </div>
-              </div>
-              <div class="card-body table-responsive p-0">
-                <table class="table table-striped table-valign-middle">
-                  <thead>
-                  <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Sales</th>
-                    <th>More</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td>
-                      <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                      Some Product
-                    </td>
-                    <td>$13 USD</td>
-                    <td>
-                      <small class="text-success mr-1">
-                        <i class="fas fa-arrow-up"></i>
-                        12%
-                      </small>
-                      12,000 Sold
-                    </td>
-                    <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                      Another Product
-                    </td>
-                    <td>$29 USD</td>
-                    <td>
-                      <small class="text-warning mr-1">
-                        <i class="fas fa-arrow-down"></i>
-                        0.5%
-                      </small>
-                      123,234 Sold
-                    </td>
-                    <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                      Amazing Product
-                    </td>
-                    <td>$1,230 USD</td>
-                    <td>
-                      <small class="text-danger mr-1">
-                        <i class="fas fa-arrow-down"></i>
-                        3%
-                      </small>
-                      198 Sold
-                    </td>
-                    <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                      Perfect Item
-                      <span class="badge bg-danger">NEW</span>
-                    </td>
-                    <td>$199 USD</td>
-                    <td>
-                      <small class="text-success mr-1">
-                        <i class="fas fa-arrow-up"></i>
-                        63%
-                      </small>
-                      87 Sold
-                    </td>
-                    <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
             <!-- /.card -->
           </div>
           <!-- /.col-md-6 -->
@@ -179,93 +57,24 @@ include_once 'templates/header.php';
             <div class="card">
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Sales</h3>
-                  <a href="javascript:void(0);">View Report</a>
+                  <h3 class="card-title">Porcentaje del cumplimiento de la cobertura de vacunacion Test</h3>
                 </div>
               </div>
               <div class="card-body">
                 <div class="d-flex">
                   <p class="d-flex flex-column">
-                    <span class="text-bold text-lg">$18,230.00</span>
-                    <span>Sales Over Time</span>
-                  </p>
-                  <p class="ml-auto d-flex flex-column text-right">
-                    <span class="text-success">
-                      <i class="fas fa-arrow-up"></i> 33.1%
-                    </span>
-                    <span class="text-muted">Since last month</span>
+                    <span class="text-bold text-lg">%0</span>
+                    <span>Total de niños vacunados</span>
                   </p>
                 </div>
                 <!-- /.d-flex -->
 
                 <div class="position-relative mb-4">
-                  <canvas id="sales-chart" height="200"></canvas>
-                </div>
-
-                <div class="d-flex flex-row justify-content-end">
-                  <span class="mr-2">
-                    <i class="fas fa-square text-primary"></i> This year
-                  </span>
-
-                  <span>
-                    <i class="fas fa-square text-gray"></i> Last year
-                  </span>
+                  <canvas id="bar-chart2" height="200"></canvas>
                 </div>
               </div>
             </div>
             <!-- /.card -->
-
-            <div class="card">
-              <div class="card-header border-0">
-                <h3 class="card-title">Online Store Overview</h3>
-                <div class="card-tools">
-                  <a href="#" class="btn btn-sm btn-tool">
-                    <i class="fas fa-download"></i>
-                  </a>
-                  <a href="#" class="btn btn-sm btn-tool">
-                    <i class="fas fa-bars"></i>
-                  </a>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-                  <p class="text-success text-xl">
-                    <i class="ion ion-ios-refresh-empty"></i>
-                  </p>
-                  <p class="d-flex flex-column text-right">
-                    <span class="font-weight-bold">
-                      <i class="ion ion-android-arrow-up text-success"></i> 12%
-                    </span>
-                    <span class="text-muted">CONVERSION RATE</span>
-                  </p>
-                </div>
-                <!-- /.d-flex -->
-                <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-                  <p class="text-warning text-xl">
-                    <i class="ion ion-ios-cart-outline"></i>
-                  </p>
-                  <p class="d-flex flex-column text-right">
-                    <span class="font-weight-bold">
-                      <i class="ion ion-android-arrow-up text-warning"></i> 0.8%
-                    </span>
-                    <span class="text-muted">SALES RATE</span>
-                  </p>
-                </div>
-                <!-- /.d-flex -->
-                <div class="d-flex justify-content-between align-items-center mb-0">
-                  <p class="text-danger text-xl">
-                    <i class="ion ion-ios-people-outline"></i>
-                  </p>
-                  <p class="d-flex flex-column text-right">
-                    <span class="font-weight-bold">
-                      <i class="ion ion-android-arrow-down text-danger"></i> 1%
-                    </span>
-                    <span class="text-muted">REGISTRATION RATE</span>
-                  </p>
-                </div>
-                <!-- /.d-flex -->
-              </div>
-            </div>
           </div>
           <!-- /.col-md-6 -->
         </div>
@@ -283,8 +92,138 @@ include_once 'templates/header.php';
   </aside>
   <!-- /.control-sidebar -->
 
-<?php 
+  <!-- Main Footer -->
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 3.2.0
+    </div>
+  </footer>
+</div>
+<!-- ./wrapper -->
 
-include_once 'templates/footer.php';
+<!-- REQUIRED SCRIPTS -->
 
-?>
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- jQuery UI -->
+<script src="./plugins/jquery-ui/jquery-ui.min.js"></script>
+<!-- AdminLTE -->
+<script src="dist/js/adminlte.js"></script>
+<!-- fullCalendar 2.2.5 -->
+<script src="./plugins/moment/moment.min.js"></script>
+<script src="./plugins/fullcalendar/main.js"></script>
+<!-- OPTIONAL SCRIPTS -->
+<script src="plugins/chart.js/Chart.min.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="dist/js/pages/dashboard3.js"></script>
+
+<script>
+  
+  window.onload = function(){
+    getData();
+    getData1();
+  }
+
+  function getData(){
+    var today = new Date();
+    var year = today.getFullYear(); 
+    
+    $.ajax({
+      url: "controlador/dashboard.php?accion=lectura&anio="+year,
+      type: "GET",
+      success: function(val){
+        console.log(val['dashboard']);
+        new Chart(document.getElementById("bar-chart"), {
+          type: 'bar',
+          data: {
+            labels: ["Enero", "Febrero", "Marzo", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", 
+          "Setiembre", "Octubre", "Noviembre", "Diciembre"],
+            datasets: [
+              {
+                label: "Population (millions)",
+                backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                data: [val['dashboard'][0].cantidad,
+                       val['dashboard'][1].cantidad,
+                       val['dashboard'][2].cantidad,
+                       val['dashboard'][3].cantidad,
+                       val['dashboard'][4].cantidad,
+                       val['dashboard'][5].cantidad,
+                       val['dashboard'][6].cantidad,
+                       val['dashboard'][7].cantidad,
+                       val['dashboard'][8].cantidad,
+                       val['dashboard'][9].cantidad,
+                       val['dashboard'][10].cantidad,
+                       val['dashboard'][11].cantidad]
+              }
+            ]
+          },
+          options: {
+            legend: { display: false },
+            title: {
+              display: true,
+              text: 'Cantidad de cumplimiento de citas de vacunación'
+            }
+          }
+        });
+      },error: function(XMLHttpRequest, textStatus, errorThrown){
+                console.log("Algo salio mal gg " + textStatus + " este thrown " + errorThrown + " el 1 " + XMLHttpRequest.responseText);
+            }
+    })
+  }
+
+  function getData1(){
+    var today = new Date();
+    var year = today.getFullYear(); 
+    
+    $.ajax({
+      url: "controlador/dashboard.php?accion=lectura2&anio="+year,
+      type: "GET",
+      success: function(val){
+        console.log(val['dashboard']);
+        new Chart(document.getElementById("bar-chart2"), {
+          type: 'bar',
+          data: {
+            labels: ["Enero", "Febrero", "Marzo", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", 
+          "Setiembre", "Octubre", "Noviembre", "Diciembre"],
+            datasets: [
+              {
+                label: "Population (millions)",
+                backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                data: [val['dashboard'][0].cantidad,
+                       val['dashboard'][1].cantidad,
+                       val['dashboard'][2].cantidad,
+                       val['dashboard'][3].cantidad,
+                       val['dashboard'][4].cantidad,
+                       val['dashboard'][5].cantidad,
+                       val['dashboard'][6].cantidad,
+                       val['dashboard'][7].cantidad,
+                       val['dashboard'][8].cantidad,
+                       val['dashboard'][9].cantidad,
+                       val['dashboard'][10].cantidad,
+                       val['dashboard'][11].cantidad]
+              }
+            ]
+          },
+          options: {
+            legend: { display: false },
+            title: {
+              display: true,
+              text: 'Cantidad de cumplimiento de citas de vacunación'
+            }
+          }
+        });
+      },error: function(XMLHttpRequest, textStatus, errorThrown){
+                console.log("Algo salio mal gg " + textStatus + " este thrown " + errorThrown + " el 1 " + XMLHttpRequest.responseText);
+            }
+    })
+  }
+
+</script>
+
+
+</body>
+</html>

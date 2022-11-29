@@ -8,12 +8,12 @@ include_once 'templates/header.php';
       <div class="container-fluid">
         <div class="row mb-2 mr-2">
           <div class="col-sm-6">
-            <h1>Citas</h1>
+            <h1>Paciente</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="index.php">Inicio</a></li>
-              <li class="breadcrumb-item active">Cita</li>
+              <li class="breadcrumb-item active">Responsable</li>
             </ol>
           </div>
         </div>
@@ -36,7 +36,7 @@ include_once 'templates/header.php';
           <!-- /.card-header -->
           <div class="card-body">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group">
                         <label>DNI</label>
                         <input type="text" class="form-control" id="txt_filter_dni"/>
@@ -44,26 +44,26 @@ include_once 'templates/header.php';
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label>Estado</label>
-                        <select class="custom-select" id="spn_filter_estado">
-                            <option value="%" selected>Todos</option>
-                            <option value="1">Creado</option>
-                            <option value="2">Realizado</option>
-                            <option value="3">Reprogramado</option>
-                            <option value="4">Cancelado</option>
-                        </select>
+                        <label>Nombre 1</label>
+                        <input type="text" class="form-control" id="txt_filter_nombre1"/>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label>Desde:</label>
-                        <input type="datetime-local" class="form-control" id="txt_filter_fechai"/>
+                        <label>Nombre 2</label>
+                        <input type="text" class="form-control" id="txt_filter_nombre2"/>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group">
-                        <label>Hasta:</label>
-                        <input type="datetime-local" class="form-control" id="txt_filter_fechae"/>
+                        <label>Apellido Paterno</label>
+                        <input type="text" class="form-control" id="txt_filter_apellido_paterno"/>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Apellido Materno</label>
+                        <input type="text" class="form-control" id="txt_filter_apellido_materno"/>
                     </div>
                 </div>
                 <!-- /.col -->
@@ -73,27 +73,26 @@ include_once 'templates/header.php';
           </div>
           <!-- /.card-body -->
           <div class="card-footer text-center">
-            <button type="button" class="btn btn-success" onclick="cargarFiltroCita()">Filtrar</button>
+            <button type="button" class="btn btn-success" onclick="cargarFiltroResponsable()">Filtrar</button>
           </div>
         </div>
         <!-- /.card -->
+
         <div class="row">
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-              <a href="RegistrarCita.php" type="button" class="btn btn-primary">Registrar nueva cita</a>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#agregarModal"  onclick="cargarAgregarPaciente()">Registrar nueva paciente</button>
               </div>
               <div class="card-body">
                 <table id="tablepabellones" class="table table-bordered">
                   <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>Fecha y Hora</th>
-                    <th>DNI Paciente</th>
-                    <th>Paciente</th>
-                    <th>DNI Responsable</th>
-                    <th>Responsable</th>
-                    <th>Estado</th>
+                    <th>N°</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>DNI</th>
+                    <th>Fecha de nacimiento</th>
                     <th>Acciones</th>
                   </tr>
                   </thead>
@@ -131,28 +130,107 @@ include_once 'templates/header.php';
 <!-- ./wrapper -->
 
 <!-- Modales Pabellon -->
-<!-- Modificar Pabellon -->
-<div class="modal fade" id="itemModal1" tabindex="-1" role="dialog" aria-labelledby="itemModalLabel" aria-hidden="true">
+<!-- Agregar Pabellon -->
+<div class="modal fade" id="agregarModal" tabindex="-1" role="dialog" aria-labelledby="itemModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-m" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="itemModalLabel">Postergar Cita</h5>
+                <h5 class="modal-title" id="itemModalLabel">Agregar Responsable</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <input type="text" class="form-control" id="txt_mod_codigo" hidden/>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Fecha:</label>
-                    <input type="datetime-local" class="form-control" id="txt_mod_fecha"/>
+
+                    <label>Nombre 1:</label>
+                    <input class="form-control" type="text" id="txt_add_nombre1">
                     <br>
+
+                    <label>Nombre 2:</label>
+                    <input class="form-control" type="text" id="txt_add_nombre2">
+                    <br>
+
+                    <label>Apellido Paterno:</label>
+                    <input class="form-control" type="text" id="txt_add_apellido_paterno">
+                    <br>
+
+                    <label>Apellido Materno:</label>
+                    <input class="form-control" type="text" id="txt_add_apellido_materno">
+                    <br>
+
+                    <label>DNI:</label>
+                    <input class="form-control" type="text" id="txt_add_dni">
+                    <br>
+
+                    <label>Fecha de nacimiento:</label>
+                    <input class="form-control" type="date" id="txt_add_fecha_nacimiento">
+                    <br>
+
+                    <label>Celular:</label>
+                    <input class="form-control" type="text" id="txt_add_celular">
+                    <br>
+
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <button type="button" class="btn btn-primary"
-                    onclick="postergarCita();"
+                    onclick="agregarResponsable();"
+                    data-dismiss="modal">Agregar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modificar Pabellon -->
+<div class="modal fade" id="itemModal1" tabindex="-1" role="dialog" aria-labelledby="itemModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-m" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="itemModalLabel">Modificar Responsable</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+
+                    <input class="form-control" type="text" id="txt_mod_codigo" readonly>    
+
+                    <label>Nombre 1:</label>
+                    <input class="form-control" type="text" id="txt_mod_nombre1">
+                    <br>
+
+                    <label>Nombre 2:</label>
+                    <input class="form-control" type="text" id="txt_mod_nombre2">
+                    <br>
+
+                    <label>Apellido Paterno:</label>
+                    <input class="form-control" type="text" id="txt_mod_apellido_paterno">
+                    <br>
+
+                    <label>Apellido Materno:</label>
+                    <input class="form-control" type="text" id="txt_mod_apellido_materno">
+                    <br>
+
+                    <label>DNI:</label>
+                    <input class="form-control" type="text" id="txt_mod_dni">
+                    <br>
+
+                    <label>Fecha de nacimiento:</label>
+                    <input class="form-control" type="date" id="txt_mod_fecha_nacimiento">
+                    <br>
+
+                    <label>Celular:</label>
+                    <input class="form-control" type="text" id="txt_mod_celular">
+                    <br>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary"
+                    onclick="modificarResponsable();"
                     data-dismiss="modal">Guardar</button>
             </div>
         </div>
@@ -164,7 +242,7 @@ include_once 'templates/header.php';
     <div class="modal-dialog modal-m" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="itemModalLabel">Cancelar Cita</h5>
+                <h5 class="modal-title" id="itemModalLabel">Eliminar Responsable</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -172,88 +250,15 @@ include_once 'templates/header.php';
             <div class="modal-body">
                 <div class="form-group">
                     <input class="form-control" type="text" id="txt_del_codigo" hidden>    
-                    <label>¿Seguro que deseas cancelar la cita?</label>
+                    <label>Responsable</label>
+                    <input class="form-control" type="text" id="txt_del_nombre" readonly>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary"
-                    onclick="cancelarCita()"
-                    data-dismiss="modal">Si</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Eliminar Pabellon -->
-<div class="modal fade" id="closeCitaModal" tabindex="-1" role="dialog" aria-labelledby="itemModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-m" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="itemModalLabel">Concluir Cita</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <input class="form-control" type="text" id="txt_aten_codigo" hidden>    
-                    <label>¿Estas seguro de cambiar de estado a Realizado?</label>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                <button type="button" class="btn btn-primary"
-                    onclick="concluirCita()"
-                    data-dismiss="modal">Si</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Detalle Cita -->
-<div class="modal fade" id="DetalleCitaModal" tabindex="-1" role="dialog" aria-labelledby="itemModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-m" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="itemModalLabel">Detalle de la cita</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <input class="form-control" type="text" id="txt_det_codigo" hidden>    
-                    <label>Fecha de la cita: </label>
-                    <input class="form-control" type="datetime-local" id="txt_det_fecha_cita" readonly>
-                    <label>Estado de la cita:</label>
-                    <input class="form-control" type="text" id="txt_det_estado" readonly>
-                    <label>DNI paciente:</label>
-                    <input class="form-control" type="text" id="txt_det_dni_paciente" readonly>
-                    <label>Nombre y apellidos del paciente:</label>
-                    <input class="form-control" type="text" id="txt_det_paciente" readonly>
-                    <label>DNI Responsable:</label>
-                    <input class="form-control" type="text" id="txt_det_dni_responsable" readonly>
-                    <label>Nombre y apellido del responsable:</label>
-                    <input class="form-control" type="text" id="txt_det_responsable" readonly>
-                    <label>Celular (SMS):</label>
-                    <input class="form-control" type="text" id="txt_det_celular" readonly>
-                    <label>Usuario:</label>
-                    <input class="form-control" type="text" id="txt_det_usuario" readonly><br>
-                    <label>VACUNAS PROGRAMADAS:</label><br>
-                    <div id="bodyVacuna">
-                        <span>No hay vacunas registradas</span>
-                    </div>
-                    <br>
-                    <button class="btn btn-success" onclick="atenderCita()">Atender Cita</button>
-                    <label>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                <button type="button" class="btn btn-primary"
-                    
-                    data-dismiss="modal">Si</button>
+                    onclick="eliminarResponsable()"
+                    data-dismiss="modal">Eliminar</button>
             </div>
         </div>
     </div>
@@ -319,7 +324,6 @@ include_once 'templates/header.php';
                                             },
                                             "responsive": true,
                                             "autoWidth": true,
-                                            "order": [[ 0, 'desc' ]]
                                         });
 
 
@@ -331,7 +335,7 @@ include_once 'templates/header.php';
     }
 
     function getData() {
-        getCita();
+        getResponsable();
     }
 
     // Funcion para testear respuesta del JSON 
@@ -348,50 +352,37 @@ include_once 'templates/header.php';
                 }
     }
 
-    function getCita(){
+    function getResponsable(){
         $.ajax({
-            url: "controlador/cita.php?accion=getlista",
+            url: "controlador/responsable.php?accion=lectura",
             type: "GET",
             success: function(val){
                 datatable.destroy();
                 var cad = "";
-                console.log("Entro en el ajax 1" + Object.values(val['cita']));
+                
+                for (i in val['responsable']) {
+                    var correlative = parseInt(i) + 1;
 
-                for (i in val['cita']) {
-                    aux = '<td align="center">' + val['cita'][i].id + '</td>';
-                    aux = aux + '<td align="center">' + val['cita'][i].fecha + '</td>';
-                    aux = aux + '<td align="center">' + val['cita'][i].dni_paciente + '</td>';
-                    aux = aux + '<td align="center">' + val['cita'][i].paciente + '</td>';
-                    aux = aux + '<td align="center">' + val['cita'][i].dni_responsable + '</td>';
-                    aux = aux + '<td align="center">' + val['cita'][i].responsable + '</td>';
-                    aux = aux + '<td align="center">' + val['cita'][i].estado + '</td>';
+                    aux = '<td align="center">' + correlative  + '</td>';
+                    aux = aux + '<td align="center">' + val['responsable'][i].nombre1 + " " + val['responsable'][i].nombre2 + '</td>';
+                    aux = aux + '<td align="center">' + val['responsable'][i].apellido_paterno + " " + val['responsable'][i].apellido_materno + '</td>';
+                    aux = aux + '<td align="center">' + val['responsable'][i].dni + '</td>';
+                    aux = aux + '<td align="center">' + val['responsable'][i].fecha_nacimiento + '</td>';
                     aux = aux + '<td class="text-center" >';
-                    aux = aux + '<button class="btn btn-info btn-styles" type="button" onclick="cargarModificarCita(\'' 
-                    + val['cita'][i].id + '\',\'' 
-                    + val['cita'][i].fecha + '\''
+                    aux = aux + '<button class="btn btn-info" type="button" onclick="cargarResponsable(\'' 
+                    + val['responsable'][i].id + '\',\'' 
+                    + val['responsable'][i].nombre1 + '\',\'' 
+                    + val['responsable'][i].nombre2 + '\',\''
+                    + val['responsable'][i].apellido_paterno + '\',\''  
+                    + val['responsable'][i].apellido_materno + '\',\'' 
+                    + val['responsable'][i].dni + '\',\'' 
+                    + val['responsable'][i].fecha_nacimiento + '\''
                     + ')" data-toggle="modal" data-target="#itemModal1" title="modificar"><i class="fa fa-edit"></i></button>';
                     aux = aux + ' ';
-                    aux = aux + '<button class="btn btn-danger btn-styles" type="button" onclick="cargarCancelarCita(\''
-                    + val['cita'][i].id + '\',\''
-                    + val['cita'][i].estado +
-                    '\')" title="cancelar" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash"></i></button>';
-                    aux = aux + ' ';
-                    aux = aux + '<button class="btn btn-info btn-styles" type="button" onclick="enviarMensaje(\'' 
-                    + val['cita'][i].fecha + '\',\'' 
-                    + val['cita'][i].dni_paciente + '\',\'' 
-                    + val['cita'][i].dni_responsable + '\''  
-                    + ')" title="reenviar sms"><i class="fa fa-sms"></i></button>';
-                    aux = aux + ' ';
-                    aux = aux + '<button class="btn btn-info btn-styles" type="button" onclick="verDetalle(\'' 
-                    + val['cita'][i].id +'\',\'' 
-                    + val['cita'][i].fecha + '\',\'' 
-                    + val['cita'][i].dni_paciente + '\',\'' 
-                    + val['cita'][i].dni_responsable + '\''  
-                    + ')" data-toggle="modal" data-target="#DetalleCitaModal" title="ver detalle de la cita"><i class="fa fa-edit"></i></button>';
-                    aux = aux + ' ';
-                    aux = aux + '<button class="btn btn-info btn-styles" type="button" onclick="cambiarAtendido(\'' 
-                    + val['cita'][i].id + '\''
-                    + ')" data-toggle="modal" data-target="#closeCitaModal" title="cambiar a Realizado"><i class="fa fa-edit"></i></button>';
+                    aux = aux + '<button class="btn btn-danger" type="button" onclick="cargarEliminarResponsable(\''
+                    + val['responsable'][i].id + '\',\''
+                    + val['responsable'][i].nombre1 + ' ' + val['responsable'][i].nombre2 + ' ' + val['responsable'][i].apellido_paterno + " " + val['responsable'][i].apellido_materno +
+                    '\')" title="eliminar" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash"></i></button>';
                     aux = aux + '</td>';
 
                     cad = cad  + '<tr>' + aux + '</tr>';
@@ -427,7 +418,6 @@ include_once 'templates/header.php';
                                                 },
                                                 "responsive": true,
                                                 "autoWidth": true,
-                                                "order": [[ 0, 'desc' ]]
                                             });
 
 
@@ -440,51 +430,101 @@ include_once 'templates/header.php';
   
 
     //seteo de modales
-    function cargarModificarCita(id, fecha  ) {
+    function cargarResponsable(id, nombre1, nombre2, apellido_paterno, apellido_materno, dni, fecha_nacimiento) {
         document.getElementById("txt_mod_codigo").value = id;
-        document.getElementById("txt_mod_fecha").value = fecha;
-    };
+        document.getElementById("txt_mod_nombre1").value = nombre1;
+        document.getElementById("txt_mod_nombre2").value = nombre2;
+        document.getElementById("txt_mod_apellido_paterno").value = apellido_paterno;
+        document.getElementById("txt_mod_apellido_materno").value = apellido_materno;
+        document.getElementById("txt_mod_dni").value = dni;
+        document.getElementById("txt_mod_fecha_nacimiento").value = fecha_nacimiento;
+    }
 
-    function cargarCancelarCita(id, estado) {
+    function cargarEliminarResponsable(id, nombre) {
         document.getElementById("txt_del_codigo").value = id;
-    };
+        document.getElementById("txt_del_nombre").value = nombre;
+    }
 
-    function cambiarAtendido(id){
-        document.getElementById("txt_aten_codigo").value = id
-    };
+    function cargarAgregarResponsable() {
+        document.getElementById("txt_add_nombre1").value = "";
+        document.getElementById("txt_add_nombre2").value = "";
+        document.getElementById("txt_add_apellido_paterno").value = "";
+        document.getElementById("txt_add_apellido_materno").value = "";
+        document.getElementById("txt_add_dni").value = "";
+        document.getElementById("txt_add_fecha_nacimiento").value = "";
+    }
 
-    function cancelarCita(){
-      var codigo = document.getElementById("txt_del_codigo").value;
+    //Opciones Insertar, Eliminar, Modificar
 
-              $.ajax({
-            url: "controlador/cita.php?codigo=" + codigo + '&accion=cancelar',
-            type: "GET",
-            success: function(val){
-                var message;
-                message = val['mensaje'].mensaje;
-                Swal.fire({
-                    title: message,
-                    icon: 'success',
-                    buttons: true
-                }).then((result) => {
-                    if(result){
-                        location.reload();
-                    }else{
-                        // something other stuff
-                    }
-                })
-            },
-        });
-    };
+    function modificarResponsable(){
 
-    function postergarCita(){
+        //codigo
         var codigo = document.getElementById("txt_mod_codigo").value;
-        var fecha = document.getElementById("txt_mod_fecha").value;
-        console.log(fecha);
-        console.log(codigo);
-      console.log("postergar cita");
+
+        //nombre
+        var nombre1 = document.getElementById("txt_mod_nombre1").value;
+
+        //capacidad
+        var nombre2 = document.getElementById("txt_mod_nombre2").value;
+
+        //detalle
+        var apellido_paterno = document.getElementById("txt_mod_apellido_paterno").value;
+
+        //estado
+        var apellido_materno = document.getElementById("txt_mod_apellido_materno").value;      
+
+        var dni = document.getElementById("txt_mod_dni").value;      
+
+        var fecha_nacimiento = document.getElementById("txt_mod_fecha_nacimiento").value;      
+
+        console.log("entro en el codigo" + codigo);
+        console.log("entro en el nombre" + nombre1);
+        console.log("entro en el capacidad" + nombre2);
+        console.log("entro en el detalle" + apellido_paterno);
+        console.log("entro en el estado" + apellido_materno);
+        console.log("entro en el estado" + dni);
+        console.log("entro en el estado" + fecha_nacimiento);
+
         $.ajax({
-            url: "controlador/cita.php?codigo=" + codigo + "&fecha=" + fecha + '&accion=postergar',
+            
+            url: "controlador/responsable.php?codigo=" + codigo + 
+                                            '&nombre1=' + nombre1 + 
+                                            '&nombre2=' + nombre2 + 
+                                            '&apellido_paterno=' + apellido_paterno +              	                                
+                                            '&apellido_materno=' + apellido_materno +
+                                            '&dni=' + dni +
+                                            '&fecha_nacimiento=' + fecha_nacimiento +
+                                            '&accion=modificar',
+            type:"GET",
+            success: function(val){
+                console.log(val['mensaje'].mensaje);
+                var message;
+                message = val['mensaje'].mensaje;
+                console.log(val); 
+                Swal.fire({
+                    title: message,
+                    icon: 'success',
+                    buttons: true
+                }).then((result) => {
+                    if(result){
+                        // Do Stuff here for success
+                        location.reload();
+                    }else{
+                        // something other stuff
+                    }
+                })
+            },            error: function(XMLHttpRequest, textStatus, errorThrown){
+                console.log("Algo salio mal gg " + textStatus + " este thrown " + errorThrown + " el 1 " + XMLHttpRequest.responseText);
+            }
+        });        
+    }
+
+    function eliminarResponsable(){
+        var codigo = document.getElementById("txt_del_codigo").value;
+        var nombre = document.getElementById("txt_del_nombre").value;
+
+        $.ajax({
+            url: "controlador/responsable.php?codigo=" + codigo + "&nombre=" + nombre + '&accion=eliminar',
             type: "GET",
             success: function(val){
                 var message;
@@ -500,28 +540,52 @@ include_once 'templates/header.php';
                         // something other stuff
                     }
                 })
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown){
+            },error: function(XMLHttpRequest, textStatus, errorThrown){
                 console.log("Algo salio mal gg " + textStatus + " este thrown " + errorThrown + " el 1 " + XMLHttpRequest.responseText);
             }
         });
-    };
+    }
 
-    function concluirCita(){
-      var codigo = document.getElementById("txt_aten_codigo").value;
-      console.log(codigo);
-      $.ajax({
-            url: "controlador/cita.php?codigo=" + codigo + '&accion=concluir',
-            type: "GET",
+    function agregarResponsable(){
+
+        var nombre1 = document.getElementById("txt_add_nombre1").value;
+
+
+        var nombre2 = document.getElementById("txt_add_nombre2").value;
+
+
+        var apellido_paterno = document.getElementById("txt_add_apellido_paterno").value;
+
+
+        var apellido_materno = document.getElementById("txt_add_apellido_materno").value;   
+
+        var dni = document.getElementById("txt_add_dni").value;
+
+        var fecha_nacimiento = document.getElementById("txt_add_fecha_nacimiento").value;   
+
+        $.ajax({
+            
+            url: "controlador/responsable.php?" +
+                                            'nombre1=' + nombre1 + 
+                                            '&nombre2=' + nombre2 + 
+                                            '&apellido_paterno=' + apellido_paterno +              	                                
+                                            '&apellido_materno=' + apellido_materno +
+                                            '&dni=' + dni +
+                                            '&fecha_nacimiento=' + fecha_nacimiento +
+                                            '&accion=agregar',
+            type:"GET",
             success: function(val){
+                console.log(val['mensaje'].mensaje);
                 var message;
                 message = val['mensaje'].mensaje;
+                console.log(val); 
                 Swal.fire({
                     title: message,
                     icon: 'success',
                     buttons: true
                 }).then((result) => {
                     if(result){
+                        // Do Stuff here for success
                         location.reload();
                     }else{
                         // something other stuff
@@ -532,123 +596,42 @@ include_once 'templates/header.php';
                 console.log("Algo salio mal gg " + textStatus + " este thrown " + errorThrown + " el 1 " + XMLHttpRequest.responseText);
             }
         });
-
-    };
-
-    function atenderCita(){
-        id = document.getElementById("txt_det_codigo").value;
-
-        console.log(id)
-        console.log("-- ATENDER CITA --");
-
-        localStorage.setItem("atender_cita",id);
-
-        window.location.href = "./atenderCita.php";
-        
-
-    };
-
-    function verDetalle(id, fecha_cita, dni_paciente, dni_responsable){
-        document.getElementById("txt_det_fecha_cita").value = id;   
-        document.getElementById("txt_det_dni_paciente").value = dni_paciente;   
-        document.getElementById("txt_det_dni_responsable").value = dni_responsable;
-        console.log("entro a ver detalle");
-        
-        $.ajax({
-            url: "controlador/cita.php?accion=detalle&cita=" + id,
-            type: "GET",
-            success: function(val){
-
-                var id = val['cita'][0].id;
-                var fecha_programada = val['cita'][0].fecha_programada;
-                console.log(fecha_programada);
-                var estado = val['cita'][0].estado;
-                var paciente_dni = val['cita'][0].paciente_dni;
-                var paciente = val['cita'][0].paciente;
-                var responsable_dni = val['cita'][0].responsable_dni;
-                var responsable = val['cita'][0].responsable;
-                var celular = val['cita'][0].celular;
-                var usuario = val['cita'][0].usuario;
-
-                document.getElementById("txt_det_codigo").value = id;
-                document.getElementById("txt_det_fecha_cita").value = fecha_programada;
-                document.getElementById("txt_det_estado").value = estado;
-                document.getElementById("txt_det_dni_paciente").value = paciente_dni;
-                document.getElementById("txt_det_paciente").value = paciente;
-                document.getElementById("txt_det_dni_responsable").value = responsable_dni;
-                document.getElementById("txt_det_responsable").value = responsable;
-                document.getElementById("txt_det_celular").value = celular;
-                document.getElementById("txt_det_usuario").value = usuario;
-                
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown){
-                console.log("Algo salio mal " + textStatus + " este thrown " + errorThrown + " el 1 " + XMLHttpRequest.responseText);
-            }
-        })
-
-        $.ajax({
-            url: "controlador/cita.php?accion=vacuna&cita=" + id,
-            type: "GET",
-            success: function(val){
-                console.log(val);
-                console.log(id);
-                var cad = "";
-                for (i in val["cita"]){
-                    aux = "<span class='badge bg-primary' style='font-size: 0.9rem;'>" + val["cita"][i].vacunas + "</span>";
-                    cad = cad + aux ;
-                }
-
-                document.getElementById("bodyVacuna").innerHTML = cad;
-
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown){
-                console.log("Algo salio mal " + textStatus + " este thrown " + errorThrown + " el 1 " + XMLHttpRequest.responseText);
-            }
-        })
-
-
-        //verDetalle('2022-10-29 11:48:09','74135021','74135021')
     }
 
-    function enviarMensaje(fecha, dni_paciente, dni_responsable){
-      window.location.href= "enviarSMS.php?responsable_dni="+dni_responsable
-                                                            +"&paciente_dni="+dni_paciente
-                                                            +"&cita_fecha="+fecha;
-    }
+    function cargarFiltroResponsable(){
 
-    function cargarFiltroCita(){
-
-        var dni = document.getElementById("txt_filter_dni").value.length;
-        var estado = document.getElementById("spn_filter_estado").value.length;
-        var fechai = document.getElementById("txt_filter_fechai").value.length;
-        var fechae = document.getElementById("txt_filter_fechae").value.length;
+        var nombre = document.getElementById("txt_filter_nombre").value.length;
+        var detalle = document.getElementById("txt_filter_detalle").value.length;
+        var estado = document.getElementById("txt_filter_estado").value;
+        var cantidadi = document.getElementById("txt_filter_capacidadi").value.length;
+        var cantidade = document.getElementById("txt_filter_capacidade").value.length;
         
 
-        if(dni == 0){
-          dni = "%";
+        if(nombre == 0){
+            nombre = "%";
         }else {
-          dni = document.getElementById("txt_filter_dni").value;
+            nombre = document.getElementById("txt_filter_nombre").value;
         }
-        if(estado == 0){
-          estado= "%";
+        if(detalle == 0){
+            detalle= "%";
         }else {
-          estado = document.getElementById("spn_filter_estado").value;
+            detalle = document.getElementById("txt_filter_detalle").value;
         }
-        if(fechai == 0){
-          fechai = "1999-01-01";
+        if(estado == 3){
+            estado = "%"
         }else {
-          fechai = document.getElementById("txt_filter_fechai").value;
+            estado = document.getElementById("txt_filter_estado").value;
         }
-        if(fechae == 0){
-          fechae = "2999-01-01";
+        if(cantidadi == 0){
+            cantidadi = 0;
         }else {
-          fechae = document.getElementById("txt_filter_fechae").value;
+            cantidadi = document.getElementById("txt_filter_capacidadi").value;
         }
-
-        console.log(dni);
-        console.log(estado);
-        console.log(fechai);
-        console.log(fechae);
+        if(cantidade == 0){
+            cantidade = 99999999;
+        }else {
+            cantidade = document.getElementById("txt_filter_capacidade").value;
+        }
         /*
         var nombre = document.getElementById("txt_filter_nombre").value;
         var capacidad = document.getElementById("txt_filter_capacidad").value;
@@ -657,65 +640,49 @@ include_once 'templates/header.php';
         var cantidadi = document.getElementById("txt_filter_capacidadi").value;
         var cantidade = document.getElementById("txt_filter_capacidade").value;
         */
-        console.log("Filter entro en el dni" + dni);
+        console.log("Filter entro en el nombre" + nombre);
+        console.log("Filter entro en el detalle" + detalle);
         console.log("Filter entro en el estado" + estado);
-        console.log("Filter entro en el fechai" + fechai);
-        console.log("Filter entro en el fechae" + fechae);
+
+        console.log("Filter entro en el cantidadi" + cantidadi);
+        console.log("Filter entro en el cantidade" + cantidade);
+
         
         $.ajax({
 
-            url: "controlador/cita.php?" + 
-                                            'dni=' + dni +
+            url: "controlador/responsable.php?" + 
+                                            'nombre=' + nombre +
+                                            '&detalle=' + detalle +
                                             '&estado=' + estado +
-                                            '&fechai=' + fechai +
-                                            '&fechae=' + fechae +
+                                            '&cantidadi=' + cantidadi +
+                                            '&cantidade=' + cantidade +
                                             '&accion=filter',
             type:"GET",
             success: function(val){
-                if (val['cita'] === null){
-                  console.log("no hay data")
-                }
-                else {
-                  console.log("si hay data")
-                
+                console.log(val);
                 datatable.destroy();
                 var cad = "";
-                console.log("Entro en el ajax 1" + Object.values(val['cita']));
+                console.log("Entro en el ajax 1" + Object.values(val['pabellonf']));
                 
-                for (i in val['cita']) {
-                    aux = '<td align="center">' + val['cita'][i].fecha + '</td>';
-                    aux = aux + '<td align="center">' + val['cita'][i].dni_paciente + '</td>';
-                    aux = aux + '<td align="center">' + val['cita'][i].paciente + '</td>';
-                    aux = aux + '<td align="center">' + val['cita'][i].dni_responsable + '</td>';
-                    aux = aux + '<td align="center">' + val['cita'][i].responsable + '</td>';
-                    aux = aux + '<td align="center">' + val['cita'][i].estado + '</td>';
+                for (i in val['pabellonf']) {
+                    aux = '<td align="center">' + val['pabellonf'][i].id + '</td>';
+                    aux = aux + '<td align="center">' + val['pabellonf'][i].nombre + '</td>';
+                    aux = aux + '<td align="center">' + val['pabellonf'][i].capacidad + '</td>';
+                    aux = aux + '<td align="center">' + val['pabellonf'][i].detalle + '</td>';
+                    aux = aux + '<td align="center">' + val['pabellonf'][i].estado + '</td>';
                     aux = aux + '<td class="text-center" >';
-                    aux = aux + '<button class="btn btn-info btn-styles" type="button" onclick="cargarModificarCita(\'' 
-                    + val['cita'][i].id + '\',\'' 
-                    + val['cita'][i].fecha + '\'' 
+                    aux = aux + '<button class="btn btn-info" type="button" onclick="cargarPabellon(\'' 
+                    + val['pabellonf'][i].id + '\',\'' 
+                    + val['pabellonf'][i].nombre + '\',\'' 
+                    + val['pabellonf'][i].capacidad + '\',\'' 
+                    + val['pabellonf'][i].detalle + '\','  
+                    + val['pabellonf'][i].estado  
                     + ')" data-toggle="modal" data-target="#itemModal1" title="modificar"><i class="fa fa-edit"></i></button>';
                     aux = aux + ' ';
-                    aux = aux + '<button class="btn btn-danger btn-styles" type="button" onclick="cargarCancelarCita(\''
-                    + val['cita'][i].id + '\',\''
-                    + val['cita'][i].estado +
-                    '\')" title="cancelar" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash"></i></button>';
-                    aux = aux + ' ';
-                    aux = aux + '<button class="btn btn-info btn-styles" type="button" onclick="enviarMensaje(\'' 
-                    + val['cita'][i].fecha + '\',\'' 
-                    + val['cita'][i].dni_paciente + '\',\'' 
-                    + val['cita'][i].dni_responsable + '\''  
-                    + ')" title="reenviar sms"><i class="fa fa-edit"></i></button>';
-                    aux = aux + ' ';
-                    aux = aux + '<button class="btn btn-info btn-styles" type="button" onclick="verDetalle(\'' 
-                    + val['cita'][i].id +'\',\'' 
-                    + val['cita'][i].fecha + '\',\'' 
-                    + val['cita'][i].dni_paciente + '\',\'' 
-                    + val['cita'][i].dni_responsable + '\''  
-                    + ')" data-toggle="modal" data-target="#itemModal1" title="ver detalle de la cita"><i class="fa fa-edit"></i></button>';
-                    aux = aux + ' ';
-                    aux = aux + '<button class="btn btn-info btn-styles" type="button" onclick="cambiarAtendido(\'' 
-                    + val['cita'][i].id + '\''
-                    + ')" data-toggle="modal" data-target="#closeCitaModal" title="cambiar a Realizado"><i class="fa fa-edit"></i></button>';
+                    aux = aux + '<button class="btn btn-danger" type="button" onclick="cargarEliminarPabellon(\''
+                    + val['pabellonf'][i].id + '\',\''
+                    + val['pabellonf'][i].nombre +
+                    '\')" title="eliminar" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash"></i></button>';
                     aux = aux + '</td>';
 
                     cad = cad  + '<tr>' + aux + '</tr>';
@@ -751,10 +718,9 @@ include_once 'templates/header.php';
                                                 },
                                                 "responsive": true,
                                                 "autoWidth": true,
-                                                "order": [[ 0, 'desc' ]]
                                             });
 
-                }
+
                 console.log("Entro en el del filtro");
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){

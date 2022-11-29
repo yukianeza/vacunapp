@@ -5,7 +5,10 @@ include '../modelo/cnnt.php';
 include '../modelo/apiModel.php';
 
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST, PUT, GET, OPTIONS');
+header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+header("Allow: GET, POST, OPTIONS, PUT, DELETE");
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
@@ -13,16 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $result = array();
     $accion = "lectura";
     $ApiAplicacion =  new ApiAplicacion($bd); 
-    /*
-    if($_GET["accion"] === "lectura"){
-
-        $result['VacunaAplicacion'] = $ApiAplicacion->getVacunaAplicacion();
-        $ApiAplicacion->disconnectBD();   
-        header('Content-type: application/json; charset=utf-8');       
-        echo json_encode($result);  
-        exit();
-
-    }*/
 
 	if($_GET["accion"] === "login"){
 		

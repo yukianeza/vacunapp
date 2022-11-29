@@ -1,19 +1,7 @@
 <?php 
-require __DIR__ . '/twilio-php-main/src/Twilio/autoload.php';
 include_once 'templates/header.php';
-
-use Twilio\Rest\Client;
-// Your Account SID and Auth Token from twilio.com/console
-$account_sid = 'ACXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-$auth_token = 'your_auth_token';
-// In production, these should be environment variables. E.g.:
-// $auth_token = $_ENV["TWILIO_ACCOUNT_SID"]
-// A Twilio number you own with SMS capabilities
-$twilio_number = "+15017122661";
-$client = new Client($account_sid, $auth_token);
-
-
 ?>
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -291,6 +279,10 @@ $client = new Client($account_sid, $auth_token);
     });
 
     function getList(){
+
+        var now = moment().format("YYYY-MM-DD");
+        console.log(now);
+        document.getElementById("txt_fecha_nacimiento").value = now;
         //txt_genero
         $.ajax({
             url: "controlador/usuario.php?accion=lectura",
@@ -372,6 +364,7 @@ $client = new Client($account_sid, $auth_token);
                     document.getElementById("txt_apellido_materno").value = val['paciente'][i].apellido_materno;
                     document.getElementById("txt_fecha_nacimiento").value = val['paciente'][i].fecha_nacimiento;
                     document.getElementById("txt_direccion").value = val['paciente'][i].direccion;
+                    console.log(window.location.href);
                 }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -447,6 +440,7 @@ $client = new Client($account_sid, $auth_token);
                     //document.getElementById("txt_fecha_nacimiento").value = val['paciente'].nombre1;
                     document.getElementById("txt_celular_responsable").value = val['paciente'][i].celular;
                     document.getElementById("txt_telefono_responsable").value = val['paciente'][i].telefono;
+                    console.log(window.location.href);
                 }
             }else {
                 Swal.fire({
@@ -467,9 +461,18 @@ $client = new Client($account_sid, $auth_token);
 
   }
 
+  function errorMensaje(mensaje){
+    Swal.fire({
+        icon: 'warning',
+        text: mensaje
+    })  
+  }
+
 
 
   function registrarCita(){
+
+    var error = "";
 
     //paciente
     paciente_dni = document.getElementById("txt_dni").value;
@@ -482,6 +485,19 @@ $client = new Client($account_sid, $auth_token);
     paciente_fecha_nacimiento = document.getElementById("txt_fecha_nacimiento").value;
     paciente_direccion = document.getElementById("txt_direccion").value;
     //paciente_fecha_nacimiento = paciente_fecha_nacimiento.replaceAll("/","-");
+
+    if (paciente_dni.length == 0  || paciente_dni.length != 8 ){
+        error = "Campo dni no vacio o excede los 8 digitos permitido en paciente";
+    }
+    if( paciente_nombre1.length == 0 ) {
+        error = error + " - Campo nombre 1 se encuenta vacio en paciente";
+    } 
+    if ( paciente_apellido_paterno.length == 0 ) { 
+        error =  error + " - Campo apellido paterno esta vacio en paciente";
+    }
+    if ( paciente_apellido_materno.length == 0 ) {
+        error = error + " - Campo apellido materno esta vacio en paciente"
+    }
     
     console.log(paciente_dni);
     console.log(paciente_nombre1);
@@ -509,6 +525,19 @@ $client = new Client($account_sid, $auth_token);
     responsable_telefono = document.getElementById("txt_telefono_responsable").value;
     //responsable_fecha_nacimiento = responsable_fecha_nacimiento.replaceAll("/","-");
 
+    if (responsable_dni.length == 0  || paciente_dni.length != 8 ){
+        error = error + " - Campo dni no vacio o excede los 8 digitos permitido en responsable";
+    }
+    if( responsable_nombre1.length == 0 ) {
+        error = error + " - Campo nombre 1 se encuenta vacio en responsable";
+    }
+    if( responsable_apellido_paterno.length == 0 ) {
+        error = error + " - Campo apellido paterno se encuenta vacio en responsable";
+    }
+    if( responsable_apellido_paterno.length == 0 ) {
+        error = error + " - Campo apellido materno se encuenta vacio en responsable";
+    }
+
     console.log(responsable_dni);
     console.log(responsable_nombre1);
     console.log(responsable_nombre2);
@@ -526,6 +555,15 @@ $client = new Client($account_sid, $auth_token);
     //cita_fecha = cita_fecha.replaceAll("/","-");
     console.log(cita_fecha);
 
+    if (cita_fecha.length == 0) {
+        error = error + " - Campo fecha de la cita se encuenta vacio";
+    }
+
+    if (error != ""){
+        alert(error);
+        return;
+    }
+
     lista_vacuna = "";
     for (i=0; i<cita_vacuna_aplicacion.length; i++){
         console.log(cita_vacuna_aplicacion[i]);
@@ -533,8 +571,6 @@ $client = new Client($account_sid, $auth_token);
     }
 
     console.log(cita_vacuna_aplicacion);
-
-    //VALIDAR SI EXISTE USUARIO 
     
     $.ajax({
         url: "controlador/registrarCitaControlador.php?responsable_dni="+responsable_dni+
@@ -576,14 +612,15 @@ $client = new Client($account_sid, $auth_token);
                         estado = val['mensaje'].mensaje;
 
                         if (estado == 'OK'){
+                            var message = 'Se registro exitosamente!!!';
+                            console.log("se registro correctamente");
                             Swal.fire({
-                                title: 'Se registro correctamente !',
+                                title: message,
                                 icon: 'success',
                                 buttons: true
                             }).then((result) => {
                                 if(result){
                                     // Do Stuff here for success
-                                    //aqui poner la logica del mandar mensaje
                                     location.reload();
                                 }else{
                                     // something other stuff
@@ -591,17 +628,13 @@ $client = new Client($account_sid, $auth_token);
                             })
                         }
                         else{
+                            var message = 'Algo salio mal !!';
+                            console.log("mensaje de registrar ");
+                            console.log(estado);
                             Swal.fire({
-                                title: 'Hubo un error',
-                                icon: 'success',
-                                buttons: true
-                            }).then((result) => {
-                                if(result){
-                                    // Do Stuff here for success
-                                }else{
-                                    // something other stuff
-                                }
-                            })
+                                title: message,
+                                icon: 'error'
+                            });
                         }
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -610,63 +643,37 @@ $client = new Client($account_sid, $auth_token);
                 })
 
             }
+            //sms
+            console.log("entro en result");
+
+            /*
+            window.location.href= "enviarSMS.php?responsable_dni="+responsable_dni
+                                                +"&responsable_nombre1="+responsable_nombre1
+                                                +"&responsable_nombre2="+responsable_nombre2
+                                                +"&responsable_apellido_paterno="+responsable_apellido_paterno
+                                                +"&responsable_apellido_materno="+responsable_apellido_materno
+                                                +"&responsable_genero="+responsable_genero
+                                                +"&responsable_fecha_nacimiento="+responsable_fecha_nacimiento
+                                                +"&responsable_celular="+responsable_celular
+                                                +"&responsable_telefono="+responsable_telefono
+                                                +"&paciente_dni="+paciente_dni
+                                                +"&paciente_nombre1="+paciente_nombre1
+                                                +"&paciente_nombre2="+paciente_nombre2
+                                                +"&paciente_nombre3="+paciente_nombre3
+                                                +"&paciente_apellido_paterno="+paciente_apellido_paterno
+                                                +"&paciente_apellido_materno="+paciente_apellido_materno
+                                                +"&paciente_genero="+paciente_genero
+                                                +"&paciente_fecha_nacimiento="+paciente_fecha_nacimiento
+                                                +"&trabajador_usuario="+trabajador_usuario
+                                                +"&cita_fecha="+cita_fecha
+                                                +"&cita_mesa="+cita_mesa
+                                                +"&cita_vacuna_aplicacion="+cita_vacuna_aplicacion
+                                                +"&cita_observacion="+cita_observacion;*/
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
                 console.log("Algo salio mal gg " + textStatus + " este thrown " + errorThrown + " el 1 " + XMLHttpRequest.responseText);
             }
     })
-
-    /*
-    $.ajax({
-        url: "controlador/registrarCitaControlador.php?" + 
-                            'accion=registrar' +
-                            '&paciente_dni=' + paciente_dni +
-                            '&paciente_nombre1=' + paciente_nombre1 +
-                            '&paciente_nombre2=' + paciente_nombre2 +
-                            '&paciente_nombre3=' + paciente_nombre3 +
-                            '&paciente_apellido_paterno=' + paciente_apellido_paterno +
-                            '&paciente_apellido_materno=' + paciente_apellido_materno + 
-                            '&paciente_fecha_nacimiento=' + paciente_fecha_nacimiento + 
-                            '&paciente_direccion=' + paciente_direccion + 
-                            '&trabajador_dni=' + trabajador_dni + 
-                            '&trabajador_usuario=' + trabajador_usuario + 
-                            '&responsable_dni=' + responsable_dni + 
-                            '&responsable_nombre1=' + responsable_nombre1 +
-                            '&responsable_nombre2=' + responsable_nombre2 +
-                            '&responsable_apellido_paterno=' + responsable_apellido_paterno +
-                            '&responsable_apellido_materno=' + responsable_apellido_materno + 
-                            '&responsable_fecha_nacimiento=' + responsable_fecha_nacimiento +
-                            '&responsable_celular=' + responsable_celular + 
-                            '&responsable_telefono=' + responsable_telefono + 
-                            '&cita_fecha=' + cita_fecha +
-                            '&cita_pabellon=' + cita_pabellon +
-                            '&cita_mesa=' + cita_mesa + 
-                            '&cita_vacuna=' + cita_vacuna + 
-                            '&lista_vacuna=' + lista_vacuna,
-        type: "GET",
-        success: function(val){
-            console.log(val);
-            var message;
-            message = val['mensaje'].mensaje;
-            Swal.fire({
-                    title: message,
-                    icon: 'success',
-                    buttons: true
-                }).then((result) => {
-                    if(result){
-                        // Do Stuff here for success
-                        location.reload();
-                    }else{
-                        // something other stuff
-                    }
-                })
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-                console.log("Algo salio mal gg " + textStatus + " este thrown " + errorThrown + " el 1 " + XMLHttpRequest.responseText);
-            }
-    });
-    
-    */
     }
     
 

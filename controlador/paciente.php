@@ -13,8 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     
     if($_GET["accion"] === "lectura"){
 
-        $result['paciente'] = $pabellon->getPaciente();
-        $pabellon->disconnectBD();   
+        $result['paciente'] = $paciente->getPaciente();
+        $paciente->disconnectBD();   
         header('Content-type: application/json; charset=utf-8');       
         echo json_encode($result);  
         exit();
@@ -23,11 +23,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
   
     if($_GET["accion"] === "modificar"){
 
-        $data['codigo'] = intval(test_input($_GET["codigo"]));
-        $data['Turno'] = test_input($_GET["descripcion"]);
+        $data['codigo'] = test_input($_GET["codigo"]);
+        $data['nombre1'] = $_GET["nombre1"];
+
+        $data['nombre2'] = $_GET["nombre2"];
+        $data['apellido_paterno'] = $_GET["apellido_paterno"];
+        $data['apellido_materno'] = $_GET["apellido_materno"];
+        $data['dni'] = $_GET["dni"];
+        $data['fecha_nacimiento'] = $_GET["fecha_nacimiento"];
     
-        $result['mensaje'] = $pabellon->updateTurno($data);
-        $pabellon->disconnectBD();   
+        $result['mensaje'] = $paciente->updatePaciente($data);
+        $paciente->disconnectBD();   
         header('Content-type: application/json; charset=utf-8');       
         echo json_encode($result);  
         exit();
@@ -36,11 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     if($_GET["accion"] === "eliminar"){
 
-        $data['codigo'] = intval(test_input($_GET["codigo"]));
-        $data['Turno'] = test_input($_GET["descripcion"]);
+        $data['codigo'] = test_input($_GET["codigo"]);
+        $data['nombre'] = test_input($_GET["nombre"]);
 
-        $result['mensaje'] = $pabellon->deleteTurno($data);
-        $pabellon->disconnectBD();   
+        $result['mensaje'] = $paciente->deletePaciente($data);
+        $paciente->disconnectBD();   
         header('Content-type: application/json; charset=utf-8');       
         echo json_encode($result);  
         exit();
@@ -49,10 +55,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     if($_GET["accion"] === "agregar"){
 
-        $data['Turno'] = test_input($_GET["descripcion"]);
+        $data['nombre1'] = test_input($_GET["nombre1"]);
+        $data['nombre2'] = test_input($_GET["nombre2"]);
+        $data['apellido_paterno'] = test_input($_GET["apellido_paterno"]);
+        $data['apellido_materno'] = test_input($_GET["apellido_materno"]);
+        $data['dni'] = test_input($_GET["dni"]);
+        $data['fecha_nacimiento'] = test_input($_GET["fecha_nacimiento"]);
         
-        $result['mensaje'] = $pabellon->insertTurno($data);
-        $pabellon->disconnectBD();   
+        $result['mensaje'] = $paciente->insertPaciente($data);
+        $paciente->disconnectBD();   
         header('Content-type: application/json; charset=utf-8');       
         echo json_encode($result);  
         exit();

@@ -238,21 +238,6 @@ class cita {
 
     }
 
-    public function insertarCita($data, $idpaciente, $idresponsable, $idtrabajador){
-
-        $this->sql = "INSERT INTO cita (idpaciente, idresponsablereserva, idresponsable, idtrabajador, estado) VALUES (" .
-                          $idpaciente .
-                    "," . $idresponsable .
-                    "," . $idresponsable .
-                    "," . $idtrabajador .
-                    ",1)";
-        if ($this->queryBD()){
-            $result["mensaje"] = "Se registro exitosamente !";
-        } else {
-            $result["mensaje"] = "Hubo un error al insertar la cita";
-        }
-        return $result;            
-    }
 
     public function insertCita($data){
         /*
@@ -415,14 +400,14 @@ class cita {
 
 
         //Registrar cita
-        $this->sql = "insert into cita(idpaciente,idresponsablereserva,idresponsable,fecha_programada,idtrabajador,idmesa,estado) values (" .
+        $this->sql = "insert into cita(idpaciente,idresponsablereserva,idresponsable,fecha_programada,idtrabajador,idmesa,estado,observacion) values (" .
                         $idpaciente . "," .
                         $idresponsable . "," .
                         $idresponsable . ",'" .
                         $data["cita_fecha"] . "'," .
                         $data["trabajador_usuario"] . "," .
                         $data["cita_mesa"] . "," .
-                        "1)";
+                        "1,'". $data["cita_observacion"]  ."')";
         $this->queryBD();
         //Obtener id 
         $this->sql = "select id from cita order by id desc limit 1";
@@ -468,6 +453,319 @@ class cita {
             return array_reverse($data);
 
         }
+    }
+
+    function getDetalle($data){
+        $this->sql = 'SELECT cita.id, cita.fecha_programada, 
+                        CASE estado 
+                        WHEN 1 THEN "Creado" 
+                        WHEN 2 THEN "Realizado" 
+                        WHEN 3 THEN "Reprogramado" 
+                        END AS estado, personapaciente.dni AS paciente_dni, CONCAT(personapaciente.nombre1, " ", personapaciente.nombre2, " ", personapaciente.apellido_paterno, " ", personapaciente.apellido_materno ) as paciente,
+                        personaresponsable.dni AS responsable_dni, CONCAT(personaresponsable.nombre1, " ", personaresponsable.nombre2, " ", personaresponsable.apellido_paterno, " ", personaresponsable.apellido_materno ) as responsable,
+                        personaresponsable.celular, CONCAT(personatrabajador.nombre1, " ", personatrabajador.nombre2, " ", personatrabajador.apellido_paterno, personatrabajador.apellido_materno) AS usuario 
+                        from cita 
+                        INNER JOIN paciente ON paciente.id = cita.idpaciente 
+                        INNER JOIN persona personapaciente ON personapaciente.id = paciente.idpersona 
+                        INNER JOIN responsable ON responsable.id = cita.idresponsable 
+                        INNER JOIN persona personaresponsable ON personaresponsable.id = responsable.idpersona 
+                        INNER JOIN trabajador ON trabajador.id = cita.idtrabajador 
+                        INNER JOIN persona personatrabajador ON personatrabajador.id = trabajador.idpersona 
+                        WHERE cita.id = ' . $data['id'] ;
+
+        $this->queryBD();
+        $data = array();
+        $temp = array();
+        if ($this->result->num_rows > 0){
+
+            while($row = $this->result->fetch_assoc()) {
+
+                $temp["id"] =  $row["id"]; 
+                $temp["fecha_programada"] =  $row["fecha_programada"]; 
+                $temp["estado"] =  $row["estado"]; 
+                $temp["paciente_dni"] =  $row["paciente_dni"]; 
+                $temp["paciente"] =  $row["paciente"]; 
+                $temp["responsable_dni"] =  $row["responsable_dni"]; 
+                $temp["responsable"] =  $row["responsable"]; 
+                $temp["celular"] =  $row["celular"];
+                $temp["usuario"] =  $row["usuario"];
+                array_push($data, $temp); 
+
+            }
+
+            return array_reverse($data);
+
+        }
+        
+
+    }
+
+    function getVacuna($data){
+        $this->sql = 'SELECT CONCAT(vacuna.detalle, " - ", aplicacion.detalle) AS vacunas FROM vacuna_aplicacion_cita
+                        INNER JOIN vacuna_aplicacion ON vacuna_aplicacion.id = vacuna_aplicacion_cita.vacuna_aplicacion_id
+                        INNER JOIN vacuna ON vacuna.id = vacuna_aplicacion.vacuna_id
+                        INNER JOIN aplicacion ON aplicacion.id = vacuna_aplicacion.aplicacion_id
+                        WHERE cita_id = ' . $data["id"];
+        $this->queryBD();
+        $data = array();
+        $temp = array(); 
+        if ($this->result->num_rows > 0){
+
+            while($row = $this->result->fetch_assoc()) {
+
+                $temp["vacunas"] =  $row["vacunas"]; 
+                array_push($data, $temp); 
+
+            }
+
+            return array_reverse($data);
+
+        }
+    }
+
+    function getVacunaCita($data){
+        $this->sql = 'SELECT vacuna_aplicacion_cita.id,vacuna_aplicacion_cita.aplico , CONCAT(vacuna.detalle, " - ", aplicacion.detalle) AS vacunas FROM vacuna_aplicacion_cita
+                        INNER JOIN vacuna_aplicacion ON vacuna_aplicacion.id = vacuna_aplicacion_cita.vacuna_aplicacion_id
+                        INNER JOIN vacuna ON vacuna.id = vacuna_aplicacion.vacuna_id
+                        INNER JOIN aplicacion ON aplicacion.id = vacuna_aplicacion.aplicacion_id
+                        WHERE cita_id = ' . $data["id"];
+        $this->queryBD();
+        $data = array();
+        $temp = array(); 
+        if ($this->result->num_rows > 0){
+
+            while($row = $this->result->fetch_assoc()) {
+
+                $temp["id"] =  $row["id"]; 
+                $temp["aplico"] =  $row["aplico"]; 
+                $temp["vacunas"] =  $row["vacunas"]; 
+                array_push($data, $temp); 
+
+            }
+
+            return array_reverse($data);
+
+        }
+    }
+
+    function getLista(){
+
+        $this->sql = '
+        select cita.id, cita.fecha_programada,personapaciente.dni as dni_paciente, CONCAT(personapaciente.nombre1, " ", personapaciente.nombre2) as paciente, personaresponsable.dni as dni_responsable, CONCAT(personaresponsable.nombre1, " ", personaresponsable.nombre2) as responsable, 
+        CASE cita.estado 
+	        WHEN 1 THEN "Creado"
+	        WHEN 2 THEN "Realizado"
+            WHEN 3 THEN "Reprogramado"
+            WHEN 4 THEN "Cancelado"
+        END as estado
+        from cita
+        INNER JOIN paciente ON paciente.id = cita.idpaciente 
+        INNER JOIN persona  personapaciente ON personapaciente.id = paciente.idpersona
+        INNER JOIN responsable ON responsable.id = cita.idresponsable
+        INNER JOIN persona  personaresponsable ON personaresponsable.id = responsable.idpersona
+        ORDER BY cita.id DESC;';
+        $this->queryBD();
+        $data = array();
+        $temp = array();
+        if ($this->result->num_rows > 0){
+
+            while($row = $this->result->fetch_assoc()) {
+
+                $temp["id"] =  $row["id"]; 
+                $temp["fecha"] =  $row["fecha_programada"]; 
+                $temp["dni_paciente"] =  $row["dni_paciente"]; 
+                $temp["paciente"] =  $row["paciente"]; 
+                $temp["dni_responsable"] =  $row["dni_responsable"]; 
+                $temp["responsable"] =  $row["responsable"]; 
+                $temp["estado"] =  $row["estado"]; 
+                array_push($data, $temp); 
+
+            }
+
+            return array_reverse($data);
+
+        }
+    }
+
+    function getAtenderCita($data){
+
+        $this->sql = 'SELECT cita.id, cita.fecha_programada, 
+                        CASE estado 
+                        WHEN 1 THEN "Creado" 
+                        WHEN 2 THEN "Realizado" 
+                        WHEN 3 THEN "Reprogramado" 
+                        END AS estado, personapaciente.dni AS paciente_dni, CONCAT(personapaciente.nombre1, " ", personapaciente.nombre2, " ", personapaciente.apellido_paterno, " ", personapaciente.apellido_materno ) as paciente,
+                        personaresponsable.dni AS responsable_dni, CONCAT(personaresponsable.nombre1, " ", personaresponsable.nombre2, " ", personaresponsable.apellido_paterno, " ", personaresponsable.apellido_materno ) as responsable,
+                        personaresponsable.celular, CONCAT(personatrabajador.nombre1, " ", personatrabajador.nombre2, " ", personatrabajador.apellido_paterno, " ", personatrabajador.apellido_materno) AS usuario, 
+                        paciente.talla, paciente.peso, paciente.pe, paciente.te, paciente.pt, paciente.desarrollo, paciente.reshab, paciente.seguro, paciente.anemia, 
+                        paciente.profilax, paciente.fecha_actualizacion, cita.idpaciente  
+                        from cita 
+                        INNER JOIN paciente ON paciente.id = cita.idpaciente 
+                        INNER JOIN persona personapaciente ON personapaciente.id = paciente.idpersona 
+                        INNER JOIN responsable ON responsable.id = cita.idresponsable 
+                        INNER JOIN persona personaresponsable ON personaresponsable.id = responsable.idpersona 
+                        INNER JOIN trabajador ON trabajador.id = cita.idtrabajador 
+                        INNER JOIN persona personatrabajador ON personatrabajador.id = trabajador.idpersona 
+                        WHERE cita.id = ' . $data['cita'] ;
+
+        $this->queryBD();
+        $data = array();
+        $temp = array();
+        if ($this->result->num_rows > 0){
+
+            while($row = $this->result->fetch_assoc()) {
+
+                $temp["id"] =  $row["id"]; 
+                $temp["fecha_programada"] =  $row["fecha_programada"]; 
+                $temp["estado"] =  $row["estado"]; 
+                $temp["paciente_dni"] =  $row["paciente_dni"]; 
+                $temp["paciente"] =  $row["paciente"]; 
+                $temp["responsable_dni"] =  $row["responsable_dni"]; 
+                $temp["responsable"] =  $row["responsable"]; 
+                $temp["celular"] =  $row["celular"];
+                $temp["usuario"] =  $row["usuario"];
+                $temp["talla"] =  $row["talla"];
+                $temp["peso"] =  $row["peso"];
+                $temp["pe"] =  $row["pe"];
+                $temp["te"] =  $row["te"];
+                $temp["pt"] =  $row["pt"];
+                $temp["desarrollo"] =  $row["desarrollo"];
+                $temp["reshab"] =  $row["reshab"];
+                $temp["seguro"] =  $row["seguro"];
+                $temp["anemia"] =  $row["anemia"];
+                $temp["profilax"] =  $row["profilax"];
+                $temp["fecha_actualizacion"] =  $row["fecha_actualizacion"];
+                $temp["idpaciente"] = $row["idpaciente"];
+
+                array_push($data, $temp); 
+
+            }
+
+            return array_reverse($data);
+
+        }
+    }
+
+    function getFilterCita($data){
+
+        $this->sql = '
+        select cita.id, cita.fecha_programada,personapaciente.dni as dni_paciente, CONCAT(personapaciente.nombre1, " ", personapaciente.nombre2) as paciente, personaresponsable.dni as dni_responsable, CONCAT(personaresponsable.nombre1, " ", personaresponsable.nombre2) as responsable, 
+        CASE cita.estado 
+	        WHEN 1 THEN "Creado"
+	        WHEN 2 THEN "Realizado"
+            WHEN 3 THEN "Reprogramado"
+            WHEN 4 THEN "Cancelado"
+        END as estado
+        from cita
+        INNER JOIN paciente ON paciente.id = cita.idpaciente 
+        INNER JOIN persona  personapaciente ON personapaciente.id = paciente.idpersona
+        INNER JOIN responsable ON responsable.id = cita.idresponsable
+        INNER JOIN persona  personaresponsable ON personaresponsable.id = responsable.idpersona
+        WHERE personapaciente.dni LIKE "' . $data['dni'] . '" AND ' .
+        ' cita.estado LIKE "' . $data["estado"] . '" AND ' .
+        ' cita.fecha_creacion >= "' . $data['fechai'] . '" AND ' .
+        ' cita.fecha_creacion <= "' . $data["fechae"] . '"' .
+        ' ORDER BY cita.fecha_creacion ASC';
+        $this->queryBD();
+        $data = array();
+        $temp = array();
+        if ($this->result->num_rows > 0){
+
+            while($row = $this->result->fetch_assoc()) {
+
+                $temp["id"] =  $row["id"]; 
+                $temp["fecha"] =  $row["fecha_programada"]; 
+                $temp["dni_paciente"] =  $row["dni_paciente"]; 
+                $temp["paciente"] =  $row["paciente"]; 
+                $temp["dni_responsable"] =  $row["dni_responsable"]; 
+                $temp["responsable"] =  $row["responsable"]; 
+                $temp["estado"] =  $row["estado"]; 
+                array_push($data, $temp); 
+
+            }
+
+            return array_reverse($data);
+
+        }
+    }
+
+    function getPostergar($data){
+        $this->sql = "UPDATE cita SET fecha_programada = '" . $data['fecha'] . "' , estado = 3 WHERE id = " . $data['codigo'];
+
+        if ($this->queryBD()){
+            $result["mensaje"] = "Se postergo la cita !";
+        } else {
+            $result["mensaje"] = "Hubo un error al insertar la cita";
+        }
+        return $result;  
+
+    }
+
+    function getConcluirCita($data){
+        $this->sql = "UPDATE cita SET estado = 2 WHERE id = " . $data["codigo"];
+
+        if ($this->queryBD()){
+            $result["mensaje"] = "Se finalizo la cita !";
+        } else {
+            $result["mensaje"] = "Hubo un error en la cita";
+        }
+        return $result;  
+
+    }
+
+    function getCancelarCita($data){
+        $this->sql = "UPDATE cita SET estado = 4 WHERE id = " . $data["codigo"];
+        if ($this->queryBD()){
+            $result["mensaje"] = "Se cancelo la cita !";
+        } else {
+            $result["mensaje"] = "Hubo un error al insertar la cita";
+        }
+        return $result;  
+    }
+
+    function actualizarCrud($data){
+        $this->sql = "UPDATE paciente SET talla = " . $data["talla"] . 
+                    ", peso = " . $data["peso"] . ", pe = " . $data["pe"] .
+                    ", te = " . $data["te"] . ", pt = " . $data["pt"] .
+                    ", desarrollo = " . $data["desarrollo"] . ", reshab = " . $data["reshab"] .
+                    ", seguro = " . $data["seguro"] . ", anemia = " . $data["anemia"] .
+                    ", profilax = " . $data["profilax"] . ", fecha_actualizacion = NOW() WHERE id = " . $data["paciente_id"] ;
+        
+        if ($this->queryBD()){
+            $result["mensaje"] = "Se guardo los datos CRED correctamente!";
+            $result["query"] = $this->sql;
+        } else {
+            $result["mensaje"] = "Hubo un error al guardar CRED";
+            $result["query"] = $this->sql;
+        }
+        return $result;
+    }
+
+    function actualizarVacunas($data){
+        
+        foreach ($data as $valor) {
+            $id = $valor->id;
+            $aplicacion = $valor->valor;
+            $this->sql="UPDATE vacuna_aplicacion_cita SET aplico = " . $aplicacion . " WHERE id = " . $id;
+            if (!$this->queryBD()){
+                $result["mensaje"] = "paso un error";
+                return $result;
+            }       
+        }
+
+        $result["mensaje"] = "Se actualizo correctamente";
+        return $result;
+
+    }
+
+    function finalizarCita($data){
+        $this->sql ="UPDATE cita SET estado = '2' WHERE id = " . $data['id'];
+        if ($this->queryBD()){
+            $result["mensaje"] = "Se finalizo la cita exitosamente !!";
+        } else {
+            $result["mensaje"] = "Hubo un error";
+        }
+        return $result;
     }
 
 }
